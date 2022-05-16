@@ -1,0 +1,48 @@
+.has-search .form-control {
+    padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
+
+.navRight {
+    display: flex;
+    align-items: center;
+}
+
+.userProfile {
+    display: flex;
+    align-items: center;
+}
+
+.notification {
+    margin-right: 15px;
+    padding: 0 10px;
+    font-size: 1.25rem;
+}
+
+.userProfileAvtar {
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 50%;
+}
+
+.userProfileName {
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+.portalNavbar {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-right: 3rem;
+}
