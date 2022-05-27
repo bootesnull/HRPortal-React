@@ -1,0 +1,17 @@
+.editable-row .ant-form-item-explain {
+    position: absolute;
+    top: 100%;
+    font-size: 12px;
+  }
+
+.modal.show{
+  display: block;
+  background: rgba(0,0,0,0.5);
+}
+.actionLink { margin-right: 15px; color:#1890ff; }
+
+.switch.btn {min-width:84px!important; min-height: calc(1em + 0.75rem + 2px)!important; padding: 0.2rem 0.75rem;}
+.switch-on.btn, .switch-off.btn { line-height: 1.24; font-size: 14px;}
+.switch-off.btn { padding-left: 18px!important; }
+.switch-on.btn { padding-right: 18px!important; }
+.btn-light { background-color:#f0f0f0; }

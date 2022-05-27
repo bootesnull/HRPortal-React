@@ -23,7 +23,7 @@ const Sidebar = () => {
                 </li>
                 <li><a href="#" className=""> Permission</a></li>
                 <li><a href="#" className=""> Allow Permission</a></li>
-                <li> <a href="#" className="nav-item-bottom" id="logoutbtn" onclick="logoutcomfirm()">
+                <li> <a href="#" className="nav-item-bottom" id="logoutbtn" >
                     <i className="fa fa-sign-out"> </i> 
                     Logout
                 </a>

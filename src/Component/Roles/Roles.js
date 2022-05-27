@@ -1,5 +1,6 @@
 import React from 'react'
 import './roles.css'
+import RoleTable from '../RoleTable/Roletable'
 
 
 // Components
@@ -15,6 +16,10 @@ const Roles = () => {
             <Sidebar />
             <div className='main-content'>
                 <Navbar />
+                <div className='container-fluid'>
+                    <RoleTable />
+                </div>
+                 
             </div>
         </div>
     )

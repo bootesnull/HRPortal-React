@@ -1,6 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-
+import "antd/dist/antd.css";
+// import GoogleLoginBtn from './Component/GoogleLoginBtn/GoogleLoginBtn'
 
 
 //Pages

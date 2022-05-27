@@ -9,8 +9,8 @@ const Navbar = () => {
             <div className="container-fluid">
                 <form className="d-flex">
                     <div className="form-group has-search">
-                        <span class="fa fa-search form-control-feedback"></span>
-                        <input type="text" class="form-control" placeholder="Search" />
+                        <span className="fa fa-search form-control-feedback"></span>
+                        <input type="text" className="form-control" placeholder="Search" />
                     </div>
                 </form>
                 <div className='navRight'>
