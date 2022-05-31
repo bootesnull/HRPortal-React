@@ -1,40 +1,37 @@
 import React from "react";
 
 
-const TableModal = (props) => {
-   // console.log(props)
-    
+const TableModal = ({show, roles, cancelModal, modalHeading}) => {
+    // destructuring of props   {show, roles, cancelModal, modalHeading}
+
     return (
         <div>
             {
-                props.show ? (
+                show ? (
                     <div className="modal fade show" tabIndex="-1"  >
                         <div className="modal-dialog">
                             <div className="modal-content">
                                 <div className="modal-header">
-                                    <h5 className="modal-title">{props.modalHeading}</h5>
-                                    <button type="button" className="btn-close" onClick={() => { props.setShow(false) }}></button>
+                                    <h5 className="modal-title">{modalHeading}</h5>
+                                    <button type="button" className="btn-close" onClick={()=> cancelModal(false)}></button>
                                 </div>
                                 <div className="modal-body">
                                     <form className="row g-3">
                                         <div className="col-12">
-                                            <label className="form-label">{props.modalHeading}</label>
-                                            <input type="text" className="form-control" id="" name={props.roles}/>
+                                            <label className="form-label">{modalHeading}</label>
+                                            <input type="text" className="form-control" id="" name={roles} />
                                         </div>
                                     </form>
                                     {/* {props.structure} */}
                                 </div>
                                 <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary"
-                                        onClick={() => { props.setShow(false) }}
-                                    >Cancel</button>
+                                    <button type="button" className="btn btn-secondary" onClick={()=> cancelModal(false)} >Cancel</button>
                                     <button type="button" className="btn btn-primary">Save</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                ) : ""
+                ) : ''
             }
 
 

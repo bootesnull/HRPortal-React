@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import "./roletable.css"
-import TableModal from './TableModal';
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 
 const RoleTable = () => {
@@ -34,19 +33,16 @@ const RoleTable = () => {
             title: 'S.No',
             dataIndex: 's.no',
             key: 's.no',
-            sorter: true,
         },
         {
             title: 'Roles',
             dataIndex: 'roles',
             key: 'roles',
-            sorter: true,
         },
         {
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
-            sorter: true,
         },
         {
             title: 'Action',
@@ -57,40 +53,90 @@ const RoleTable = () => {
     ]
 
     const [tableData, setTableData] = useState(data);
-    const [basicModal, setBasicModal] = useState(false);
-    const [modalTitle, setModalTitle] = useState('');
+    // const [showBasicModal, setShowBasicModal] = useState(false);
+    // const [modalTitle, setModalTitle] = useState('');
+    const [editTableCol, setEditTableCol] = useState(null);
     const [addForm, setAddForm] = useState([{
         sNo: "",
         roles: "",
         status: '',
     }]);
 
+    const [editFormData, setEditFormData] = useState([{
+        sNo: "",
+        roles: "",
+        status: '',
+    }]);
 
 
-    // show modal handler
-    const showModal = () => {
-        setBasicModal(true);
-    }
+    // //show Modal Handler
+    // const showModal = () => {
+    //     setShowBasicModal(true);
+    // }
+ 
+    // //search filter handler    
+    // const searchFilter = (e) => {
+    //     const search = e.target.value.toLowerCase();
+    //     const filterData = data.filter(newData => newData.roles.toLowerCase().includes(search))
+    //     setTableData(filterData);
+    // };
 
-    //search filter handler    
-    const searchFilter = (e) => {
-        const search = e.target.value.toLowerCase();
-        const filterData = data.filter(newData => newData.roles.toLowerCase().includes(search))
-        setTableData(filterData);
+   
+    //edit col
+    
+    
+    const handleEditCol = (row) => {
+        setEditTableCol(row.sNo);
+
+        const formValues = {
+            sNo: row.sNo,
+            roles: row.roles,
+            status: row.status, 
+        }
+        setEditFormData(formValues);
     };
 
+    //edit col onChange
+      const handleEditChange = (e) => {
+        //console.log("name",e.target.name,"value",e.target.value);
+        setEditFormData((state) => {
+            return { ...state, [e.target.name]: e.target.value }
+        })
+    };
+
+    // // save edit handler
+    const handleEditSaveData = (e) => {
+        e.preventDefault();
+        setTableData((state) => {
+            return [...state, { ...editFormData  }]
+        })
+
+    }
 
 
+    // // cancel edit handler
+    const handleCancelEdit = () => {
+        setEditTableCol(null);
+    };
+
+     // // Delete handler
+     const handleDelete = (key) => {
+        const newData = tableData.filter((item) => item.key !== key);
+        setTableData(newData);
+    };
+
+   
     //add form
-    const handleChange = (e) => {
+    const handleAddChange = (e) => {
         //console.log("name",e.target.name,"value",e.target.value);
         setAddForm((state) => {
             return { ...state, [e.target.name]: e.target.value }
         })
     };
+
     // console.log(addForm);
 
-    const addData = (e) => {
+    const handleAddData = (e) => {
         e.preventDefault();
         setTableData((state) => {
             return [...state, { ...addForm }]
@@ -102,25 +148,9 @@ const RoleTable = () => {
         <div className="card">
             <div className="card-body" >
 
-                <div className="d-flex justify-content-between">
 
-                    <div className="d-flex">
-                        <div className="form-group has-search">
-                            <span className="fa fa-search form-control-feedback"></span>
-                            <input type="text" className="form-control"
-                                onChange={(e) => searchFilter(e)}
-                            />
-                        </div>
-                    </div>
-
-                    <button
-                        className="btn btn-primary"
-                        style={{ float: 'right', marginBottom: '15px' }}
-                        onClick={() => {
-                            setModalTitle('Add Role')
-                            showModal()
-                        }}>Add</button>
-                </div>
+                <h5 className="card-title"><b>Role Table</b></h5>
+                <form onSubmit={handleEditSaveData}>
                 <table className='table table-bordered'>
                     <thead>
                         <tr>
@@ -136,8 +166,9 @@ const RoleTable = () => {
                         {tableData.map((row, index) => {
                             return (
                                 <tr key={index}>
-                                    <td>{row.sNo}</td>
-                                    <td>{row.roles}</td>
+                                    <td>{++index}</td>
+                                    {/* <td>{row.roles}</td> */}
+                                    <td> { editTableCol === row.sNo ? (<input autoComplete="off" type="text" name="roles" value={editFormData.roles} onChange={handleEditChange} />)  :( row.roles) }</td>
                                     <td><BootstrapSwitchButton
                                         checked={true}
                                         onlabel='Active'
@@ -147,32 +178,33 @@ const RoleTable = () => {
                                     // }}
                                     /></td>
                                     <td>
-                                        <a className="actionLink" onClick={() => {
-                                            setModalTitle('Edit Role')
-                                            showModal()
-                                        }}>Edit</a>
+                                        <button type="button" className="btn btn-outline-secondary btn-sm mx-1" onClick={()=>handleEditCol(row)}>Edit</button>
+                                        <button type='submit' className="btn btn-outline-secondary btn-sm mx-1">Save</button>
+                                        <button type="button" className="btn btn-outline-secondary btn-sm mx-1" onClick={handleCancelEdit}>Cancel</button>
+                                        <button className="btn btn-outline-secondary btn-sm mx-1" onClick={() => handleDelete(row.key)}>Delete</button>
                                     </td>
                                 </tr>
                             );
                         })}
                     </tbody>
                 </table>
+                </form>
 
                 <div>
                     <h4>Add Information</h4>
-                    <form className="row g-3" onSubmit={addData}>
-                        <div className="col-3">
+                    <form className="row g-3" onSubmit={handleAddData}>
+                        {/* <div className="col-3">
                             <label className="form-label">S.No</label>
-                            <input type="text" className="form-control" id="" name="sNo" onChange={handleChange} />
-                        </div>
+                            <input type="text" className="form-control" id="" name="sNo" onChange={handleChange} required="required" />
+                        </div> */}
                         <div className="col-3">
                             <label className="form-label">Roles</label>
-                            <input type="text" className="form-control" id="" name="roles" onChange={handleChange} />
+                            <input type="text" className="form-control" id="" name="roles" onChange={handleAddChange} required="required" autoComplete="off" />
                         </div>
-                        <div className="col-3">
+                        {/* <div className="col-3">
                             <label className="form-label">Status</label>
-                            <input type="text" className="form-control" id="" name="status" onChange={handleChange} />
-                        </div>
+                            <input type="text" className="form-control" id="" name="status" onChange={handleChange} required="required" />
+                        </div> */}
                         <div className="col-3">
                             <label className="form-label">Action</label>
                             <div><button type="submit" className="btn btn-primary" >Add</button></div>
@@ -180,7 +212,27 @@ const RoleTable = () => {
                     </form>
                 </div>
             </div>
-            <TableModal show={basicModal} setShow={setBasicModal} modalHeading={modalTitle} />
+            {/* <TableModal show={showBasicModal} cancelModal={setShowBasicModal} modalHeading={modalTitle} /> 
+            
+                 <div className="d-flex justify-content-between">
+
+                 <div className="d-flex">
+                        <div className="form-group has-search">
+                            <span className="fa fa-search form-control-feedback"></span>
+                            <input type="text" className="form-control"
+                                onChange={(e) => searchFilter(e)}
+                            />
+                        </div>
+                    </div> 
+
+                    <button
+                        className="btn btn-primary"
+                        style={{ float: 'right', marginBottom: '15px' }}
+                        onClick={()=> {
+                            setModalTitle('Add Information')
+                            showModal()
+                        }}>Add</button>
+                </div> */}
 
         </div>
     )
