@@ -64,9 +64,10 @@ const RoleTable = () => {
     //add form-------------------------------
     const handleAddChange = (e) => {
         //console.log("name",e.target.name,"value",e.target.value);
-        setAddForm((state) => {
-            return { ...state, [e.target.name]: e.target.value }
+        setAddForm((a) => {
+            return { ...a, [e.target.name]: e.target.value }
         })
+        
     };
 
     const handleAddData = (e) => {

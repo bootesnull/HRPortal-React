@@ -11,22 +11,19 @@ const Sidebar = () => {
         <nav className="sidebar">
             <ul>
                 <li className='logoLi'>
-                    <Link to='/'>
-                        <img className='logo' src={logo} />
-                    </Link>
+                    <Link to='/' className='logoLink'><img className='logo' src={logo} /></Link>
                 </li>
                 <li>
-                    <Link
-                        to='/role'>
-                        Roles
-                    </Link>
+                    <Link to='/roles'> Roles</Link>
                 </li>
-                <li><a href="#" className=""> Permission</a></li>
-                <li><a href="#" className=""> Allow Permission</a></li>
-                <li> <a href="#" className="nav-item-bottom" id="logoutbtn" >
-                    <i className="fa fa-sign-out"> </i> 
-                    Logout
-                </a>
+                <li>
+                    <Link to='/permission'>Permission</Link>
+                </li>
+                <li>
+                    <Link to='/allow-permission'>Allow Permission</Link>
+                </li>
+                <li>
+                    <Link to='/logout' className="nav-item-bottom" id="logoutbtn" ><i className="fa fa-sign-out"> </i>Logout</Link>
                 </li>
             </ul>
         </nav>

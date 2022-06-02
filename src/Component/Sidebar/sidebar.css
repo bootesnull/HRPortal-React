@@ -51,12 +51,13 @@ nav.sidebar ul li {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+nav.sidebar ul li a.logoLink { padding-left: 10px;}
 nav.sidebar ul li a {
   position: relative;
   color: var(--secondary);
   text-decoration: none;
   font-size: 18px;
-  padding-left: 40px;
+  padding-left: 24px;
   font-weight: 500;
   display: block;
   width: 100%;
@@ -104,5 +105,5 @@ nav.sidebar ul ul li a {
 
 .logo {
   width: 75%;
-  padding: 10px 0;
+  padding: 13px 0;
 }

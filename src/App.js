@@ -1,27 +1,24 @@
+import React from "react";
+
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import "antd/dist/antd.css";
+import Navbar from "./Component/Navbar/Navbar";
+import Sidebar from "./Component/Sidebar/Sidebar";
 // import GoogleLoginBtn from './Component/GoogleLoginBtn/GoogleLoginBtn'
 
+// template
+import Main from "./templates/Main";
 
-//Pages
-import Home from './pages/Home/Home'
-import Error from './pages/Error/Error';
-import Roles from './Component/Roles/Roles';
+const App = () => {
+    return(
+        <div>
+          {/* <GoogleLoginBtn /> */}
+            <Sidebar/>
+            <div className='main-content'>
+                <Navbar/>
+                <Main />
+            </div>
+        </div>
+    );
+};
 
-function App() {
-  return (
-    <div className='content'>
-      {/* <GoogleLoginBtn /> */}
-      <Router>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/role' element={<Roles />} />
-          <Route path='*' element={<Error />} />
-        </Routes>
-      </Router>
-    </div>
-  );
-}
-
-export default App;
+export default App; 
