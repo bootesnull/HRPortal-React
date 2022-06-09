@@ -16,7 +16,7 @@ const Navbar = () => {
                 <div className='navRight'>
                     <i className="fa fa-bell notification"></i>
                     <div className='userProfile'>
-                        <img src={userImg} className='userProfileAvtar' />
+                        <img src={userImg} className='userProfileAvtar' alt='User Avatar' />
                         <div className='userProfileName'>John Doe</div>
                     </div>
                 </div>

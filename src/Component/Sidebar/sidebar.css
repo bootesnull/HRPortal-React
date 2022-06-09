@@ -64,12 +64,13 @@ nav.sidebar ul li a {
   border-left: 3px solid transparent;
 }
 
-nav.sidebar ul li a:hover {
+nav.sidebar ul li a:hover, nav.sidebar ul li a.active {
   color: cyan;
   background: #1e1e1e;
   border-left-color: cyan;
   transition: 0.2s;
 }
+
 
 nav.sidebar ul ul {
   position: static;

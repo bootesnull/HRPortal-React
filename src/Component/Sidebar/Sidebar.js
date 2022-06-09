@@ -1,6 +1,6 @@
 import React from 'react'
 import logo from '../../Images/logo.svg'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 import './sidebar.css'
 
@@ -11,19 +11,28 @@ const Sidebar = () => {
         <nav className="sidebar">
             <ul>
                 <li className='logoLi'>
-                    <Link to='/' className='logoLink'><img className='logo' src={logo} /></Link>
+                    <NavLink to='/' className='logoLink'><img className='logo' src={logo} alt='Company Logo' /></NavLink>
                 </li>
                 <li>
-                    <Link to='/roles'> Roles</Link>
+                    <NavLink to='/roles' > Roles</NavLink>
                 </li>
                 <li>
-                    <Link to='/permission'>Permission</Link>
+                    <NavLink to='/permission'>Permission</NavLink>
                 </li>
                 <li>
-                    <Link to='/allow-permission'>Allow Permission</Link>
+                    <NavLink to='/users-List'>Users List</NavLink>
                 </li>
                 <li>
-                    <Link to='/logout' className="nav-item-bottom" id="logoutbtn" ><i className="fa fa-sign-out"> </i>Logout</Link>
+                    <NavLink to='/leaves'>Leaves</NavLink>
+                </li>
+                <li>
+                    <NavLink to='/announcement'>Announcement</NavLink>
+                </li>
+                <li>
+                    <NavLink to='/events'>Events</NavLink>
+                </li>
+                <li>
+                    <NavLink to='/logout' className="nav-item-bottom" id="logoutbtn" ><i className="fa fa-sign-out"> </i>Logout</NavLink>
                 </li>
             </ul>
         </nav>

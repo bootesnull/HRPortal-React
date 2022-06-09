@@ -1,35 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./roletable.css"
-import BootstrapSwitchButton from 'bootstrap-switch-button-react'
+import BootstrapSwitchButton from 'bootstrap-switch-button-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchRoleList } from '../../reducers/rolesReducer'
+import { API_URL, token } from '../../api'
 
 const RoleTable = () => {
 
-    const data = [
-        {
-            key: '1',
-            sNo: 1,
-            roles: "HR",
-            status: 'pending',
-        }, {
-            key: '2',
-            sNo: 2,
-            roles: "CEO",
-            status: 'approved',
-        }, {
-            key: '3',
-            sNo: 3,
-            roles: "Admin",
-            status: 'decline',
-        }, {
-            key: '4',
-            sNo: 4,
-            roles: "user",
-            status: 'pending',
+    const [roleTbData, setRoleTbData] = useState([{}]);
+    const roleDetails = useSelector((state) => state.Roles.roleList)
+   // console.log(roleDetails);
+
+
+    const dispatch = useDispatch();
+    const roleList = async () => {
+        try {
+            const response = await fetch(
+                `${API_URL}/api/rbac/role/list`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                }
+            );
+            let data = await response.json();
+           // console.log(data);
+            dispatch(fetchRoleList(data.data))
+
+        } catch (e) {
+           // console.log("Error", e.response.data);
         }
-    ];
+    }
+    useEffect(() => {
+        roleList()
+    }, [])
+
+    useEffect(() => {
+        setRoleTbData(roleDetails)
+    }, [roleDetails])
 
 
-    const [tableData, setTableData] = useState(data);
     // const [showBasicModal, setShowBasicModal] = useState(false);
     // const [modalTitle, setModalTitle] = useState('');
     const [editTableCol, setEditTableCol] = useState(null);
@@ -45,18 +57,21 @@ const RoleTable = () => {
         status: '',
     }]);
 
-    const [sortOrder, setSortOrder]=useState("ASC");
+    const [sortOrder, setSortOrder] = useState("ASC");
+
+
+
 
     //sorting table
     const sorting = (col) => {
         if (sortOrder === "ASC") {
-            const sorted = [...tableData].sort((a,b)=> a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1);
-            setTableData(sorted);
+            const sorted = [...roleTbData].sort((a, b) => a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1);
+            setRoleTbData(sorted);
             setSortOrder("DSC");
         }
         if (sortOrder === "DSC") {
-            const sorted = [...tableData].sort((a,b)=>a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1);
-            setTableData(sorted);
+            const sorted = [...roleTbData].sort((a, b) => a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1);
+            setRoleTbData(sorted);
             setSortOrder("ASC");
         }
     };
@@ -67,12 +82,12 @@ const RoleTable = () => {
         setAddForm((a) => {
             return { ...a, [e.target.name]: e.target.value }
         })
-        
+
     };
 
     const handleAddData = (e) => {
         e.preventDefault();
-        setTableData((state) => {
+        setRoleTbData((state) => {
             return [...state, { ...addForm }]
         })
         e.target.reset();
@@ -95,10 +110,10 @@ const RoleTable = () => {
 
     //edit save handler
     const handleEditSaveData = () => {
-        const newData = [...tableData]
+        const newData = [...roleTbData]
         const index = newData.findIndex((data) => data.sNo === editFormData.sNo)
         newData[index] = editFormData
-        setTableData(newData)
+        setRoleTbData(newData)
         setEditTableCol(null)
     }
 
@@ -109,8 +124,8 @@ const RoleTable = () => {
 
     //Delete handler
     const handleDelete = (key) => {
-        const newData = tableData.filter((item) => item.key !== key);
-        setTableData(newData);
+        const newData = roleTbData.filter((item) => item.key !== key);
+        setRoleTbData(newData);
     };
 
     // //show Modal Handler
@@ -121,15 +136,15 @@ const RoleTable = () => {
     // //search filter handler    
     const searchFilter = (e) => {
         const search = e.target.value.toLowerCase();
-        const filterData = data.filter(newData => newData.roles.toLowerCase().includes(search))
-        setTableData(filterData);
+        const filterData = roleTbData.filter(newData => newData.roles.toLowerCase().includes(search))
+        setRoleTbData(filterData);
     };
 
     return (
         <div className="card">
             <div className="card-body" >
                 <h5 className="card-title"><b>Role Table</b></h5>
-                
+
                 <div className="d-flex justify-content-between my-3">
                     <div className="d-flex">
                         <div className="form-group has-search">
@@ -138,43 +153,44 @@ const RoleTable = () => {
                                 onChange={(e) => searchFilter(e)}
                             />
                         </div>
-                    </div> 
-                </div> 
+                    </div>
+                </div>
 
                 <table className='table table-bordered'>
                     <thead>
                         <tr>
                             <th >S.No.</th>
-                            <th onClick={()=> {sorting("roles") }}>Roles</th>
+                            <th onClick={() => { sorting("name") }}>Role Name</th>
                             <th >Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {tableData.map((row, index) => {
+                        {roleTbData.map((rolesData, index) => {
                             return (
                                 <tr key={index}>
-                                    <td>{++index}</td>
-                                    {/* <td>{row.roles}</td> */}
-                                    <td> {editTableCol === row.sNo ? (<input autoComplete="off" type="text" name="roles" value={editFormData.roles} onChange={handleEditChange} />) : (row.roles)}</td>
-                                    <td><BootstrapSwitchButton
-                                        checked={true}
-                                        onlabel='Active'
-                                        offlabel='Inactive'
-                                    // onChange={(checked:boolean) => {
-                                    //     this.setState({ isUserAdmin: checked })
-                                    // }}
-                                    /></td>
-                                    <td>{editTableCol === row.sNo ?
-                                            (   <span>
-                                                <button type='submit' className="btn btn-outline-secondary btn-sm mx-1" onClick={()=>handleEditSaveData(row) }>Save</button>
-                                                <button type="button" className="btn btn-outline-secondary btn-sm mx-1" onClick={handleCancelEdit}>Cancel</button>
-                                                </span>
-                                            ):
-                                            (<button type="button" className="btn btn-outline-secondary btn-sm mx-1" onClick={() => handleEditCol(row)}>Edit</button>)
-                                        }
+                                    <td>{rolesData.id}</td>
+                                    <td> {editTableCol === rolesData.id ? (<input autoComplete="off" type="text" name="name" value={editFormData.name} onChange={handleEditChange} />) : (rolesData.name)}</td>
+                                    <td>{rolesData.status}
+                                        {/* <BootstrapSwitchButton
+                                            checked={true}
+                                            onlabel='Active'
+                                            offlabel='Inactive'
+                                            onChange={(checked: boolean) => {
+                                                this.setState({ isUserAdmin: checked })
+                                            }}
+                                        /> */}
+                                    </td>
+                                    <td>{editTableCol === rolesData.id ?
+                                        (<span>
+                                            <button type='submit' className="btn btn-outline-secondary btn-sm mx-1" onClick={() => handleEditSaveData(rolesData)}>Save</button>
+                                            <button type="button" className="btn btn-outline-secondary btn-sm mx-1" onClick={handleCancelEdit}>Cancel</button>
+                                        </span>
+                                        ) :
+                                        (<button type="button" className="btn btn-outline-secondary btn-sm mx-1" onClick={() => handleEditCol(rolesData)}>Edit</button>)
+                                    }
 
-                                        <button className="btn btn-outline-secondary btn-sm mx-1" onClick={() => handleDelete(row.key)}>Delete</button>
+                                        <button className="btn btn-outline-secondary btn-sm mx-1" onClick={() => handleDelete(rolesData.key)}>Delete</button>
                                     </td>
                                 </tr>
                             );
@@ -186,18 +202,11 @@ const RoleTable = () => {
                 <div>
                     <h4>Add Information</h4>
                     <form className="row g-3" onSubmit={handleAddData}>
-                        {/* <div className="col-3">
-                            <label className="form-label">S.No</label>
-                            <input type="text" className="form-control" id="" name="sNo" onChange={handleChange} required="required" />
-                        </div> */}
                         <div className="col-3">
                             <label className="form-label">Roles</label>
                             <input type="text" className="form-control" id="" name="roles" onChange={handleAddChange} required="required" autoComplete="off" />
                         </div>
-                        {/* <div className="col-3">
-                            <label className="form-label">Status</label>
-                            <input type="text" className="form-control" id="" name="status" onChange={handleChange} required="required" />
-                        </div> */}
+
                         <div className="col-3">
                             <label className="form-label">Action</label>
                             <div><button type="submit" className="btn btn-primary" >Add</button></div>
