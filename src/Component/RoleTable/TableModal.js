@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const TableModal = ({show, roles, cancelModal, modalHeading}) => {
+const TableModal = ({show,  cancelModal, modalHeading, structure}) => {
     // destructuring of props   {show, roles, cancelModal, modalHeading}
 
     return (
@@ -16,13 +16,7 @@ const TableModal = ({show, roles, cancelModal, modalHeading}) => {
                                     <button type="button" className="btn-close" onClick={()=> cancelModal(false)}></button>
                                 </div>
                                 <div className="modal-body">
-                                    <form className="row g-3">
-                                        <div className="col-12">
-                                            <label className="form-label">{modalHeading}</label>
-                                            <input type="text" className="form-control" id="" name={roles} />
-                                        </div>
-                                    </form>
-                                    {/* {props.structure} */}
+                                    {structure}
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary" onClick={()=> cancelModal(false)} >Cancel</button>

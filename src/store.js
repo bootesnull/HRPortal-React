@@ -7,18 +7,20 @@ import { persistReducer } from 'redux-persist'
 
 import rolesReducer from "./reducers/rolesReducer";
 import userReducer from "./reducers/userReducer";
+import permissionReducer from "./reducers/permissionReducer";
 
 
 const reducers = combineReducers({
     Roles: rolesReducer,
     Users: userReducer,
+    Permissions: permissionReducer,
 
 });
 
 const persistConfig = {
     key: 'root',
     storage: storage,
-    blacklist: ["Roles", "Users"]
+    // blacklist: ["Roles", "Users", "Permissions"]
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

@@ -10,8 +10,71 @@
 }
 .actionLink { margin-right: 15px; color:#1890ff; }
 
-.switch.btn {min-width:84px!important; min-height: calc(1em + 0.75rem + 2px)!important; padding: 0.2rem 0.75rem;}
-.switch-on.btn, .switch-off.btn { line-height: 1.24; font-size: 14px;}
-.switch-off.btn { padding-left: 18px!important; }
-.switch-on.btn { padding-right: 18px!important; }
-.btn-light { background-color:#f0f0f0; }
+
+
+
+.cm-toggle {
+	-webkit-appearance: none;
+	-webkit-tap-highlight-color: transparent;
+	position: relative;
+	border: 0;
+	outline: 0;
+	cursor: pointer;
+	margin: 2px;
+}
+
+
+/* To create surface of toggle button */
+.cm-toggle:after {
+	content: 'Inactive';
+	width: 84px;
+	height: 28px;
+	display: inline-block;
+	background: rgba(196, 195, 195, 0.35);
+	border-radius: 4px;
+	clear: both;
+  border:1px solid rgba(196, 195, 195, 0.65);
+  line-height: 26px;
+  font-size: 14px;
+  padding-left: 24px;
+}
+
+
+/* Contents before checkbox to create toggle handle */
+.cm-toggle:before {
+	content: '';
+	width: 16px;
+	height: 26px;
+	display: block;
+	position: absolute;
+	left: 1px;
+	top: 1px;
+	border-radius: 4px;
+	background: rgb(255, 255, 255);
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+
+/* Shift the handle to left on check event */
+.cm-toggle:checked:before {
+	left: 67px;
+	box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+/* Background color when toggle button will be active */
+.cm-toggle:checked:after {
+	background: rgb(0, 136, 0);
+  content: 'Active';
+  padding-left: 14px;
+  color: #fff;;
+}
+
+.cm-toggle,
+.cm-toggle:before,
+.cm-toggle:after,
+.cm-toggle:checked:before,
+.cm-toggle:checked:after {
+	transition: ease .3s;
+	-webkit-transition: ease .3s;
+	-moz-transition: ease .3s;
+	-o-transition: ease .3s;
+}
