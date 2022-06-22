@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const TableModal = ({show,  cancelModal, modalHeading, structure}) => {
+const TableModal = ({show,  cancelModal, modalHeading, structure,}) => {
     // destructuring of props   {show, roles, cancelModal, modalHeading}
 
     return (
@@ -18,10 +18,7 @@ const TableModal = ({show,  cancelModal, modalHeading, structure}) => {
                                 <div className="modal-body">
                                     {structure}
                                 </div>
-                                <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" onClick={()=> cancelModal(false)} >Cancel</button>
-                                    <button type="button" className="btn btn-primary">Save</button>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>

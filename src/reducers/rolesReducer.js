@@ -13,7 +13,7 @@ const initialState = {
 
 
 
- // Role ADD 
+// Role ADD 
 export const createRoleList = createAsyncThunk(
   "roles/roleAdd",
   async (name, thunkAPI) => {
@@ -40,11 +40,11 @@ export const createRoleList = createAsyncThunk(
   }
 );
 
- // Role Status Update
+// Role Status Update
 export const roleStatus = createAsyncThunk(
   'roles/roleStatus',
-  async ({value,id}, thunkAPI) => {
-   
+  async ({ value, id }, thunkAPI) => {
+
     try {
       const statusResult = await fetch(
         `${API_URL}/api/rbac/role/update-status`,
@@ -72,13 +72,44 @@ export const roleStatus = createAsyncThunk(
   });
 
 
- // Role Name Edit 
-  export const roleEdit = createAsyncThunk(
-    'roles/editRole', 
-    async({id, name}, thunkAPI) => {
-      try {
-        const editResponse = await fetch(
-          `${API_URL}/api/rbac/role/edit`,
+// Role Name Edit 
+export const roleEdit = createAsyncThunk(
+  'roles/editRole',
+  async ({ id, name }, thunkAPI) => {
+    try {
+      const editResponse = await fetch(
+        `${API_URL}/api/rbac/role/edit`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            id: id,
+            name: name,
+          })
+        }
+      );
+
+      let data = await editResponse.json();
+      console.log(data);
+      return data;
+    } catch (e) {
+      console.log("error", e.editResponse.data)
+      thunkAPI.rejectWithValue(e.editResponse.data)
+    }
+  }
+);
+
+// Assign Role by user_id, role_id
+export const roleUserAssign = createAsyncThunk(
+  'roles/assign-role',
+  async ({userId,roleId}, thunkAPI) => {
+    try {
+      const assignResponse = await fetch(
+        `${API_URL}/api/rbac/assign-role/assign`,
           {
             method: "POST",
             headers: {
@@ -87,22 +118,21 @@ export const roleStatus = createAsyncThunk(
               Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
-              id: id,
-              name: name,
+              user_id:userId,
+              role_id:roleId,
             })
           }
         );
-
-        let data = await editResponse.json();
+        let data = await assignResponse.json();
         console.log(data);
         return data;
-      } catch (e) {
-        console.log("error", e.editResponse.data)
-        thunkAPI.rejectWithValue(e.editResponse.data)
-      }
-    }
-    );
 
+      } catch (e) {
+        console.log('error', e.assignResponse.data)
+        thunkAPI.rejectWithValue(e.assignResponse.data)
+      }
+  }
+);
 
 
 
@@ -143,6 +173,16 @@ const rolesReducer = createSlice({
       return { ...action.payload }
     },
     [roleStatus.rejected]: (state, action) => {
+      return { ...action.payload }
+    },
+
+    [roleUserAssign.fulfilled]: (state, action) => {
+      return { ...action.payload }
+    },
+    [roleUserAssign.pending]: (state, action) => {
+      return { ...action.payload }
+    },
+    [roleUserAssign.rejected]: (state, action) => {
       return { ...action.payload }
     },
   }

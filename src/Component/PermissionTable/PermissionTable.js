@@ -1,47 +1,46 @@
 import './permissionTable.css';
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import { fetchPermissionList } from "../../reducers/permissionReducer";
 import {API_URL, token } from '../../api'
 
 const Permission = () => {
     const [permissionTbData, setPermissionTbData] = useState([{}]);
-    const permissionDetails = useSelector((state) => state.Permissions.permissionList)
+    const permissionDetails = useSelector((state) => state.Permissions)
+    const [fetchPermissionList, setFetchPermissionList] = useState([{}])
     //console.log(userDetails);
 
-    const dispatch = useDispatch();
-    
-    const permissionList = async () => {
-        try {
-            const response = await fetch(
-                `${API_URL}/api/rbac/permission/list`,
-                {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`
-                    },
-                }
-            );
-            let data = await response.json();
-           // console.log(data);
-            dispatch(fetchPermissionList(data.data))
+    //const dispatch = useDispatch();
 
-        } catch (e) {
-            //console.log("Error", e.response.data);
+    useEffect(() => {
+        const permissionList = async () => {
+            try {
+                const response = await fetch(
+                    `${API_URL}/api/rbac/permission/list`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`
+                        },
+                    }
+                );
+                let data = await response.json();
+                //console.log(data.data);
+                setFetchPermissionList(data.data)
+
+            } catch (e) {
+                // console.log("Error", e.response.data);
+            }
         }
-    }
-    
-    useEffect(() => {
         permissionList()
-    }, [])
-
-    useEffect(() => {
-        setPermissionTbData(permissionDetails)
     }, [permissionDetails])
 
 
-    //fetchUsersList
+    useEffect(() => {
+        setPermissionTbData(fetchPermissionList)
+    }, [fetchPermissionList])
+
 
 
     return (
@@ -65,8 +64,7 @@ const Permission = () => {
                                 <td>{permit.parent}</td>
                                 <td>{permit.status}</td>
                                 <td>
-                                    <button className="btn btn-primary  btn-sm mx-1">View Detail</button>
-                                    <button className="btn btn-secondary  btn-sm mx-1">Update</button>
+                                    <button className="btn btn-secondary  btn-sm mx-1">Edit</button>
                                 </td>
                             </tr>
                         );

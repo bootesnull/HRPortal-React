@@ -1,47 +1,42 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchUsersList } from "../../reducers/userReducer";
-import {API_URL, token } from '../../api'
-
+import {  useSelector } from "react-redux";
+import { } from "../../reducers/userReducer";
+import { API_URL, token } from '../../api'
+import { Link } from "react-router-dom";
 const UsersTable = () => {
     const [userTbData, setUserTbData] = useState([{}]);
-    const userDetails = useSelector((state) => state.Users.userList)
-    //console.log(userDetails);
+    const userDetails = useSelector((state) => state.Users)
+    const [fetchUserList, setFetchUserList] = useState([{}])
+   
+    useEffect(() => {
+        const usersList = async () => {
+            try {
+                const response = await fetch(
+                    `${API_URL}/api/user/list`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`
+                        },
+                    }
+                );
+                let data = await response.json();
+                console.log(data.data);
+                setFetchUserList(data.data)
 
-    const dispatch = useDispatch();
-    
-    const usersList = async () => {
-        try {
-            const response = await fetch(
-                `${API_URL}/api/user/list`,
-                {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`
-                    },
-                }
-            );
-            let data = await response.json();
-            console.log(data);
-            dispatch(fetchUsersList(data.data))
-
-        } catch (e) {
-            //console.log("Error", e.response.data);
+            } catch (e) {
+                // console.log("Error", e.response.data);
+            }
         }
-    }
-    
-    useEffect(() => {
         usersList()
-    }, [])
-
-    useEffect(() => {
-        setUserTbData(userDetails)
     }, [userDetails])
 
 
-    //fetchUsersList
 
+    useEffect(() => {
+        setUserTbData(fetchUserList)
+    }, [fetchUserList])
 
     return (
         <div>
@@ -70,8 +65,9 @@ const UsersTable = () => {
                                 <td>{user.role}</td>
                                 <td>{user.status}</td>
                                 <td>
-                                    <button className="btn btn-primary  btn-sm mx-1">View Detail</button>
-                                    <button className="btn btn-secondary  btn-sm mx-1">Update</button>
+                                    {/* <button className="btn btn-primary  btn-sm mx-1">View Detail</button> */}
+                                  
+                                    <Link className="btn btn-secondary  btn-sm mx-1" to={'/editUserDetails/'+ user.id}>Update</Link>
                                 </td>
                             </tr>
                         );

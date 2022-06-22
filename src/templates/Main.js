@@ -10,7 +10,7 @@ import Announcement from '../pages/Announcement/Announcement';
 import Events from '../pages/Events/Events';
 
 import Error from '../pages/Error/Error';
-
+import EditUserDetail from '../Component/UsersTable/EditUserDetail';
 
 
 const Main = () => {
@@ -22,6 +22,7 @@ const Main = () => {
           <Route path='/roles' element={<Roles />} />
           <Route path='/permission' element={<Permission />} />
           <Route path='/users-List' element={<UsersList />} />
+          <Route path='/editUserDetails/:id' element={<EditUserDetail />} />
           <Route path='/leaves' element={<Leaves />} />
           <Route path='/announcement' element={<Announcement />} />
           <Route path='/events' element={<Events />} />

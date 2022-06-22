@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "./roletable.css"
 import { useDispatch, useSelector } from 'react-redux';
-import { createRoleList, roleEdit, roleStatus } from '../../reducers/rolesReducer'
+import { createRoleList, roleEdit, roleStatus, roleUserAssign } from '../../reducers/rolesReducer'
 import { API_URL, token } from '../../api'
 import TableModal from './TableModal'
 
@@ -11,8 +11,10 @@ const RoleTable = () => {
     const [roleTbData, setRoleTbData] = useState([{}]);
     const roleDetails = useSelector((state) => state.Roles)
 
+    const [message, setMessage] = useState();
 
-    //console.log(roleDetails);
+
+    //console.log(roleDetails.statusCode);
     const [showBasicModal, setShowBasicModal] = useState(false);
     const [modalTitle, setModalTitle] = useState('');
     const [editTableCol, setEditTableCol] = useState(null);
@@ -27,6 +29,15 @@ const RoleTable = () => {
         name: "",
         status: '',
     }]);
+
+    useEffect(()=>{
+        if (roleDetails.statusCode==201) {
+            setMessage(roleDetails.message);
+        }
+        if (roleDetails.statusCode==500) {
+            setMessage(roleDetails.message)
+        }
+    },[roleDetails])
 
 
 
@@ -80,6 +91,58 @@ const RoleTable = () => {
     }, [fetchList])
 
 
+
+    const [fetchUserList, setFetchUserList] = useState([{}])
+
+    /**************** */
+    useEffect(() => {
+        const usersList = async () => {
+            try {
+                const response = await fetch(
+                    `${API_URL}/api/user/list`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`
+                        },
+                    }
+                );
+                let data = await response.json();
+
+                setFetchUserList(data.data)
+
+            } catch (e) {
+                // console.log("Error", e.response.data);
+            }
+        }
+        usersList()
+    }, [])
+
+
+    // assign role by user_id and role_id
+    const [roleAssign, setRoleAssign] = useState({ userId: '', roleId: '' });
+
+    const handleRoleAssignChange = (e) => {
+        setRoleAssign((a) => {
+            return { ...a, [e.target.name]: e.target.value }
+        })
+    }
+
+
+
+
+
+    const handleRoleAssignSave = (e) => {
+        e.preventDefault();
+        //console.log()
+        dispatch(roleUserAssign(roleAssign))
+       // setShowBasicModal(false)
+
+    }
+
+
+
     //add form-------------------------------
     const handleAddChange = (e) => {
         // console.log("name",e.target.name,"value",e.target.value);
@@ -88,6 +151,9 @@ const RoleTable = () => {
         })
 
     };
+
+
+
 
     const handleAddData = (e) => {
         console.log(e);
@@ -148,12 +214,12 @@ const RoleTable = () => {
                 <h5 className="card-title"><b>Role Table</b></h5>
                 <div>
                     <button
-                    className="btn btn-primary"
-                    style={{ float: 'right', marginBottom: '15px' }}
-                    onClick={() => {
-                        setModalTitle('Assign Roles')
-                        showModal()
-                    }}>Assign Role</button>
+                        className="btn btn-primary"
+                        style={{ float: 'right', marginBottom: '15px' }}
+                        onClick={() => {
+                            setModalTitle('Assign Roles')
+                            showModal()
+                        }}>Assign Role</button>
                 </div>
 
                 <div className="d-flex justify-content-between my-3">
@@ -220,7 +286,7 @@ const RoleTable = () => {
                             <div><button type="submit" className="btn btn-primary" >Add</button></div>
                         </div>
                         <div className={`alert `} role="alert">
-                            {roleDetails.message}
+                            {message}
                         </div>
 
                     </form>
@@ -229,34 +295,37 @@ const RoleTable = () => {
 
 
 
-            <TableModal 
-            show={showBasicModal} 
-            cancelModal={setShowBasicModal} 
-            modalHeading={modalTitle}
-            structure={(
-                    <form>
+            <TableModal
+                show={showBasicModal}
+                cancelModal={setShowBasicModal}
+                modalHeading={modalTitle}
+
+                structure={(
+                    <form onSubmit={handleRoleAssignSave} >
                         <div className="mb-3">
                             <label className="form-label">User Name</label>
-                            <select class="form-select">
-                                <option selected>Select User Name</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <select className="form-select" name="roleId" onChange={handleRoleAssignChange}>
+                                <option defaultValue>Select User Name</option>
+                                {fetchUserList && fetchUserList.map((userData, id) => {return   <option key={id} value={userData.id}>{userData.name}</option>})}
                             </select>
                         </div>
+
                         <div className="mb-3">
                             <label className="form-label">Role Name</label>
-                            <select class="form-select">
-                                <option selected>Select Role Name</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                            <select className="form-select" name="userId" onChange={handleRoleAssignChange}>
+                            <option defaultValue>Select Role Name</option>
+                            {roleTbData && roleTbData.map((rolesData, id) => {return   <option key={id} value={rolesData.id}>{rolesData.name}</option>})}
                             </select>
                         </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" onClick={(e)=>setShowBasicModal(false)}  >Cancel</button>
+                            <button type="submit" className="btn btn-primary"  >Save</button>       
+                        </div>
+
                     </form>
-                )} 
+                )}
             />
-                
+
 
 
         </div>

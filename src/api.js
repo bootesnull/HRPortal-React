@@ -1,3 +1,3 @@
 
-export const API_URL = 'https://c658-203-145-168-10.ngrok.io'
-export let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNoYXJhbnZlZXJrQGJvb3Rlc251bGwuY29tIiwidXNlcklkIjo3LCJyb2xlIjoxLCJpYXQiOjE2NTUzODExNDYsImV4cCI6MTY1NTk4NTk0Nn0.Yd62B04HpVzw4DFt7ycudiU9MVys2QdSfIbB9qL_Feg'
+export const API_URL = 'http://192.168.1.13:3000'
+export let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNoYXJhbnZlZXJrQGJvb3Rlc251bGwuY29tIiwidXNlcklkIjo3LCJyb2xlIjoxLCJpYXQiOjE2NTU4ODIwMzEsImV4cCI6MTY1NjQ4NjgzMX0.mpjRrUKyS9n9UrurN3axzLLzdU0tFnndlKWlL2StP5w'
