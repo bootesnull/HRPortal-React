@@ -30,6 +30,7 @@ const RoleTable = () => {
         status: '',
     }]);
 
+
     useEffect(()=>{
         if (roleDetails.statusCode==201) {
             setMessage(roleDetails.message);
@@ -38,6 +39,7 @@ const RoleTable = () => {
             setMessage(roleDetails.message)
         }
     },[roleDetails])
+    
 
 
 
