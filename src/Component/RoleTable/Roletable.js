@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createRoleList, roleEdit, roleStatus, roleUserAssign } from '../../reducers/rolesReducer'
 import { API_URL, token } from '../../api'
 import TableModal from './TableModal'
+import { toast  } from 'react-toastify';
 
 
 const RoleTable = () => {
@@ -32,13 +33,28 @@ const RoleTable = () => {
 
 
     useEffect(()=>{
-        if (roleDetails.statusCode==201) {
-            setMessage(roleDetails.message);
+        if (roleDetails.statusCode===201) {
+            toast.success(roleDetails.message);
         }
-        if (roleDetails.statusCode==500) {
-            setMessage(roleDetails.message)
+        if (roleDetails.statusCode===500) {
+            toast.error(roleDetails.message);
         }
     },[roleDetails])
+    
+
+
+    // useEffect(()=>{
+    //     if (roleDetails.statusCode==201) {
+    //         setMessage((state)=>{
+    //             return {...state,successMessage:roleDetails.message}
+    //         });
+    //     }
+    //     if (roleDetails.statusCode==500) {
+    //         setMessage((state)=>{
+    //             return {...state,errorMessage:roleDetails.message}
+    //         });
+    //     }
+    // },[roleDetails])
     
 
 
@@ -287,9 +303,15 @@ const RoleTable = () => {
                         <div className="col-3">
                             <div><button type="submit" className="btn btn-primary" >Add</button></div>
                         </div>
-                        <div className={`alert `} role="alert">
-                            {message}
-                        </div>
+
+
+                        { message}
+                        {/* { message.successMessage ?
+                            (<div>{message.successMessage && <div className="alert alert-success">{message.successMessage}</div>}</div>)
+                            :
+                            ( <div >{message.errorMessage && <div className="alert alert-danger">{message.errorMessage}</div>}</div>)
+                        } */}
+                       
 
                     </form>
                 </div>
