@@ -9,7 +9,6 @@ import rolesReducer from "./reducers/rolesReducer";
 import userReducer from "./reducers/userReducer";
 import permissionReducer from "./reducers/permissionReducer";
 
-
 const reducers = combineReducers({
     Roles: rolesReducer,
     Users: userReducer,
@@ -20,7 +19,7 @@ const reducers = combineReducers({
 const persistConfig = {
     key: 'root',
     storage: storage,
-    // blacklist: ["Roles", "Users", "Permissions"]
+    blacklist: ["Roles"]
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);
