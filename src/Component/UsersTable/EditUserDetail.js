@@ -6,6 +6,7 @@ const EditUserDetail = () => {
     return (
 
         <div className='container-fluid'>
+            
             <div className="card">
                 <div className="card-body" >
                     <h5 className="card-title"><b>Edit User Details</b></h5>
