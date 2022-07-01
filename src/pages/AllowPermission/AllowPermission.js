@@ -1,15 +1,14 @@
 import React from "react";
-import LeavesListType from "../../Component/Leaves/LeavesListType";
+import AllowPermissionTable from "../../Component/PermissionTable/AllowPermissionTable";
 
 
-const Leaves = () => {
+const AllowPermission = () => {
     return (
         <div>
             <div className='container-fluid'>
                 <div className="card">
                     <div className="card-body" >
-                        <LeavesListType />
-                        
+                        <AllowPermissionTable />
                     </div>
                 </div>
             </div>
@@ -17,4 +16,4 @@ const Leaves = () => {
     );
 };
 
-export default Leaves;
+export default AllowPermission;

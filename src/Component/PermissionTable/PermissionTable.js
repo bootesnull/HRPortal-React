@@ -1,50 +1,135 @@
 import './permissionTable.css';
 import React, { useState, useEffect } from "react";
-import {  useSelector } from "react-redux";
-import { fetchPermissionList } from "../../reducers/permissionReducer";
-import {API_URL, token } from '../../api'
+import { useDispatch, useSelector } from "react-redux";
+import { permissionList, permissionStatus, createPermission, editFetchPermission, editPermission } from "../../reducers/permissionReducer";
+import { toast } from 'react-toastify';
+import TableModal from '../utils/TableModal';
+
+
 
 const Permission = () => {
+    const [flag, setFlag] = useState(false)
+    const dispatch = useDispatch();
+    const permissionDetails = useSelector((state) => state?.Permissions)
+    const permissionListing = useSelector((state) => state?.Permissions?.permissionListing)
+    console.log(permissionListing);
+
+  
     const [permissionTbData, setPermissionTbData] = useState([{}]);
-    const permissionDetails = useSelector((state) => state.Permissions)
-    const [fetchPermissionList, setFetchPermissionList] = useState([{}])
-    //console.log(userDetails);
+    console.log(permissionTbData);
+    const [permissionAdd, setPermissionAdd] = useState({
+        parent: "",
+        permissionName: "",
+    });
 
-    //const dispatch = useDispatch();
+    const [permissionEdit, setPermissionEdit] = useState({});
+
+    const [showBasicModal, setShowBasicModal] = useState(false);
+    const [modalTitle, setModalTitle] = useState('');
+
 
     useEffect(() => {
-        const permissionList = async () => {
-            try {
-                const response = await fetch(
-                    `${API_URL}/api/rbac/permission/list`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`
-                        },
-                    }
-                );
-                let data = await response.json();
-                //console.log(data.data);
-                setFetchPermissionList(data.data)
-
-            } catch (e) {
-                // console.log("Error", e.response.data);
-            }
+        const callback = (data) => {
+            setPermissionTbData([...data]);
         }
-        permissionList()
-    }, [permissionDetails])
+        permissionList(callback)
+
+    }, [permissionDetails]);
+    useEffect(() => {
+        if(!permissionListing) return;
+        setPermissionEdit({...permissionListing.data})
+
+    }, [permissionListing]);
 
 
     useEffect(() => {
-        setPermissionTbData(fetchPermissionList)
-    }, [fetchPermissionList])
+        if (permissionDetails.statusCode === 201) {
+            toast.success(permissionDetails.message)
+        }
+        if (permissionDetails.statusCode === 400) {
+            toast.error(permissionDetails.message)
+        }
+    }, [permissionDetails]);
+console.log(permissionEdit);
+
+const {id,parent,permission_name:permissionName} = permissionEdit
+const[state,setState] = useState({
+    id:'',
+    parent:'',
+    permissionName:""
+})
+console.log(state);
+
+    // permission status updates
+    const handleUpdateStatus = (e, id) => {
+        let value = e.target.checked ? 1 : 0;
+        // console.log(value)
+        dispatch(permissionStatus({ id, value }))
+    };
 
 
+    // permission  onChange  and add
+    const handleAddChange = (e) => {
+        setPermissionAdd((a) => {
+            return { ...a, [e.target.name]: e.target.value }
+        })
+        //console.log("name", e.target.name, "value", e.target.value);
+    }
+
+    const handleEditChange = (e) => {
+
+        setState((a) => {
+            return { ...a, [e.target.name]: e.target.value }
+        })
+        //console.log("name", e.target.name, "value", e.target.value);
+    }
+
+    const handleAddPermission = (e) => {
+        // console.log(e);
+        e.preventDefault();
+        // console.log(permissionAdd)
+        dispatch(createPermission(permissionAdd));
+        setShowBasicModal(false)
+    }
+
+    // permission  add popup
+    const showModal = () => {
+        setShowBasicModal(true)
+    }
+
+    const handleEditPermission = (e, id) => {
+        e.preventDefault();
+         dispatch(editPermission(permissionEdit));
+         setShowBasicModal(false)
+    }
+    const handleEdit = (id) =>{
+            setFlag(!flag)
+            setModalTitle('Edit Permission')
+            showModal()
+            dispatch(editFetchPermission(id))
+    }
+  
+
+    // Delete handler
+    // const handleDelete = (id) => {
+    //     // const newData = permissionTbData.filter((item) => item.id !== id);
+    //     // setPermissionTbData(newData);
+    //     //console.log(id)
+    //     dispatch(permissionDelete(id))
+    // };
 
     return (
         <div>
+            <h5 className="card-title"><b> Permission List</b>
+                <button
+                    className="btn btn-primary modal-btn"
+                    onClick={() => {
+                        setFlag(false)
+                        setModalTitle('Add Permission')
+                        showModal()
+                    }}>Add Permission</button>
+            </h5>
+
             <table className='table table-bordered'>
                 <thead>
                     <tr>
@@ -56,21 +141,90 @@ const Permission = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {permissionTbData.map((permit, index) => {
+                    {permissionTbData && permissionTbData.map((permit, index) => {
                         return (
                             <tr key={index}>
                                 <td>{permit.id}</td>
                                 <td>{permit.permission_name}</td>
                                 <td>{permit.parent}</td>
-                                <td>{permit.status}</td>
                                 <td>
-                                    <button className="btn btn-secondary  btn-sm mx-1">Edit</button>
+                                    <input type="checkbox"
+                                        className='cm-toggle'
+                                        checked={permit.status}
+                                        name="status"
+                                        id={permit.id}
+                                        value={permit.status}
+                                        onChange={(e) => handleUpdateStatus(e, permit.id)}
+                                    />
+                                </td>
+                                <td>
+                                    <button className="btn btn-secondary  btn-sm mx-1"
+                                        onClick={()=>handleEdit(permit.id)}
+                                    >Edit</button>
+                                    {/* <button className="btn btn-secondary  btn-sm mx-1" onClick={() => handleDelete(permit.id)}>Delete</button> */}
                                 </td>
                             </tr>
                         );
                     })}
                 </tbody>
             </table>
+
+
+
+            <TableModal
+                show={showBasicModal}
+                cancelModal={setShowBasicModal}
+                modalHeading={modalTitle}
+
+                structure={(
+                    <div>
+                        {flag ? (<>
+                            <form onSubmit={handleEditPermission} >
+                                <div className="mb-3">
+                                    <label className="form-label">#ID</label>
+                                    <input type="text" className="form-control" defaultValue={id}  placeholder='Id' name="id" onChange={handleEditChange} required="required" autoComplete="off" />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label">Parent edit</label>
+                                    <input type="text" className="form-control" defaultValue={parent}  placeholder='Parent Id' name="parent" onChange={handleEditChange} required="required" autoComplete="off" />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label">Permission Name</label>
+                                    <input type="text" className="form-control" id="" defaultValue={permissionName} placeholder='Permission Name' name="permissionName" onChange={handleEditChange} required="required" autoComplete="off" />
+                                </div>
+
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" onClick={(e) => setShowBasicModal(false)}  >Cancel</button>
+                                    <button type="submit" className="btn btn-primary"  >Save</button>
+                                </div>
+
+                            </form></>) : (<><form onSubmit={handleAddPermission} >
+                                <div className="mb-3">
+                                    <label className="form-label">Parent</label>
+                                    <input type="text" className="form-control" id="" placeholder='Parent Id' name="parent" onChange={handleAddChange} required="required" autoComplete="off" />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label">Permission Name</label>
+                                    <input type="text" className="form-control" id="" placeholder='Permission Name' name="permissionName" onChange={handleAddChange} required="required" autoComplete="off" />
+                                </div>
+
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" onClick={(e) => setShowBasicModal(false)}  >Cancel</button>
+                                    <button type="submit" className="btn btn-primary"  >Save</button>
+                                </div>
+
+                            </form>
+                            </>)}
+
+
+
+
+                    </div>
+                )}
+            />
+
+
+
         </div>
     );
 };

@@ -7,8 +7,6 @@ const Permission = () => {
             <div className='container-fluid'>
                 <div className="card">
                     <div className="card-body" >
-                        <h5 className="card-title"><b> Permissions</b></h5>
-
                         <PermissionTable />
                     </div>
                 </div>

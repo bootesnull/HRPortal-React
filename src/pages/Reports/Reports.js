@@ -1,14 +1,13 @@
 import React from "react";
-import LeavesListType from "../../Component/Leaves/LeavesListType";
 
-
-const Leaves = () => {
+const Reports = () => {
     return (
         <div>
             <div className='container-fluid'>
                 <div className="card">
                     <div className="card-body" >
-                        <LeavesListType />
+                        <h5 className="card-title"><b> Reports</b></h5>
+
                         
                     </div>
                 </div>
@@ -17,4 +16,4 @@ const Leaves = () => {
     );
 };
 
-export default Leaves;
+export default Reports;

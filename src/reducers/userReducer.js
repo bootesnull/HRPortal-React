@@ -2,6 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     userList: [],
+    user: {
+        message: "",
+        statusCode: '',
+      },
 };
 
 

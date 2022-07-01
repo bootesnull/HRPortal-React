@@ -22,7 +22,7 @@ const UsersTable = () => {
                     }
                 );
                 let data = await response.json();
-                console.log(data.data);
+              //  console.log(data.data);
                 setFetchUserList(data.data)
 
             } catch (e) {

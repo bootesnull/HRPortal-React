@@ -1,14 +1,14 @@
 import React from "react";
-import LeavesListType from "../../Component/Leaves/LeavesListType";
+import AttendenceTable from "../../Component/AttendenceTable/AttendenceTable";
 
-
-const Leaves = () => {
+const Attendence = () => {
     return (
         <div>
             <div className='container-fluid'>
                 <div className="card">
                     <div className="card-body" >
-                        <LeavesListType />
+                        <AttendenceTable />
+
                         
                     </div>
                 </div>
@@ -17,4 +17,4 @@ const Leaves = () => {
     );
 };
 
-export default Leaves;
+export default Attendence;

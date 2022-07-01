@@ -3,8 +3,8 @@ import "./roletable.css"
 import { useDispatch, useSelector } from 'react-redux';
 import { createRoleList, roleEdit, roleStatus, roleUserAssign } from '../../reducers/rolesReducer'
 import { API_URL, token } from '../../api'
-import TableModal from './TableModal'
 import { toast  } from 'react-toastify';
+import TableModal from "../utils/TableModal";
 
 
 const RoleTable = () => {
@@ -12,7 +12,7 @@ const RoleTable = () => {
     const [roleTbData, setRoleTbData] = useState([{}]);
     const roleDetails = useSelector((state) => state.Roles)
 
-    const [message, setMessage] = useState();
+
 
 
     //console.log(roleDetails.statusCode);
@@ -57,11 +57,12 @@ const RoleTable = () => {
     // },[roleDetails])
     
 
-
+    const dispatch = useDispatch();
 
 
     const handleUpdateStatus = (e, id) => {
         let value = e.target.checked ? 1 : 0
+        console.log(value)
         dispatch(roleStatus({ value, id }))
     }
 
@@ -77,7 +78,7 @@ const RoleTable = () => {
 
     // }
 
-    const dispatch = useDispatch();
+    
 
     useEffect(() => {
         const roleList = async () => {
@@ -283,8 +284,6 @@ const RoleTable = () => {
                                         ) :
                                         (<button type="button" className="btn btn-outline-secondary btn-sm mx-1" onClick={() => handleEditCol(rolesData)}>Edit</button>)
                                     }
-
-
                                     </td>
                                 </tr>
                             );
@@ -305,7 +304,7 @@ const RoleTable = () => {
                         </div>
 
 
-                        { message}
+                        {/* { message} */}
                         {/* { message.successMessage ?
                             (<div>{message.successMessage && <div className="alert alert-success">{message.successMessage}</div>}</div>)
                             :
