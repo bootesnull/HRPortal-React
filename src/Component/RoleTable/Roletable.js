@@ -156,7 +156,7 @@ const RoleTable = () => {
         e.preventDefault();
         //console.log()
         dispatch(roleUserAssign(roleAssign))
-       // setShowBasicModal(false)
+        setShowBasicModal(false)
 
     }
 
@@ -327,7 +327,7 @@ const RoleTable = () => {
                     <form onSubmit={handleRoleAssignSave} >
                         <div className="mb-3">
                             <label className="form-label">User Name</label>
-                            <select className="form-select" name="roleId" onChange={handleRoleAssignChange}>
+                            <select className="form-select" name="userId" onChange={handleRoleAssignChange}>
                                 <option defaultValue>Select User Name</option>
                                 {fetchUserList && fetchUserList.map((userData, id) => {return   <option key={id} value={userData.id}>{userData.name}</option>})}
                             </select>
@@ -335,7 +335,7 @@ const RoleTable = () => {
 
                         <div className="mb-3">
                             <label className="form-label">Role Name</label>
-                            <select className="form-select" name="userId" onChange={handleRoleAssignChange}>
+                            <select className="form-select" name="roleId" onChange={handleRoleAssignChange}>
                             <option defaultValue>Select Role Name</option>
                             {roleTbData && roleTbData.map((rolesData, id) => {return   <option key={id} value={rolesData.id}>{rolesData.name}</option>})}
                             </select>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { announceList, announceCreate } from "../../reducers/announcementReducer";
+import { announceList, announceCreate, announcementDelete } from "../../reducers/announcementReducer";
 import TableModal from "../utils/TableModal";
 
 const AnnouncementTable = () => {
@@ -47,6 +47,15 @@ const AnnouncementTable = () => {
     }
 
 
+      // Delete handler
+    const handleDelete = (id) => {
+        // const newData = announcementTbData.filter((item) => item.id !== id);
+        // setPermissionTbData(newData);
+        //console.log(id)
+        dispatch(announcementDelete(id))
+    };
+
+
     return(
         <div>
              <h5 className="card-title"><b>Announcement List</b>
@@ -81,21 +90,21 @@ const AnnouncementTable = () => {
                                 <td>{announce?.created_at?.slice(0, 10)}</td>
                                 {/* <td>{announce?.updated_at?.slice(0, 10)}</td> */}
                                 <td>
-                                    <input type="checkbox"
+                                    {/* <input type="checkbox"
                                             className='cm-toggle'
                                             checked={announce.status}
                                             name="status"
                                             id={announce.id}
                                             value={announce.status}
                                             // onChange={(e)=> handleUpdateStatus(e, announce.id) }
-                                    />        
+                                    />         */}
                                 </td>
                                 <td>
                                     <button className="btn btn-secondary  btn-sm mx-1"
                                         
                                     >Edit</button>
                                     <button className="btn btn-secondary  btn-sm mx-1"
-                                        
+                                        onClick={()=> handleDelete(announce.id)}
                                         >Delete</button>
                                 </td>
                             </tr>

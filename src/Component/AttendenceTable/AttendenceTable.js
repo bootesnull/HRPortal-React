@@ -19,12 +19,7 @@ const AttendenceTable = () => {
 
     return(
         <div>
-             <h5 className="card-title"><b>Attendence List</b>
-                    <button
-                        className="btn btn-primary modal-btn"
-
-                        >Add Announcement</button>
-            </h5>
+             <h5 className="card-title"><b>Attendence List</b></h5>
 
             <table className='table table-bordered'>
                 <thead>

@@ -61,7 +61,33 @@ export const announceCreate = createAsyncThunk(
     }
 );
 
-
+// Announcment delete API
+export const announcementDelete = createAsyncThunk(
+    'annoucement/announce-delete',
+    async ( id, thunkAPI) => {
+        console.log(id)
+        try{
+            const response = await fetch(
+                `${API_URL}/api/events/announcements/delete?id=${id}`,
+                {
+                    method: "DELETE",
+                    headers : {
+                        Accept : "application/json",
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify(id)
+                }
+            );
+            let data = response.json();
+            console.log(data);
+            return data;
+        }catch(e) {
+            console.log("error", e.response.data)
+            thunkAPI.rejectWithValue(e.response.data)
+        }
+    }
+);    
 
 const announcementReducer = createSlice({
     name: "Announcement",

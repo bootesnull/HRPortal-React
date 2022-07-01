@@ -1,4 +1,5 @@
 import React from "react";
+import ReportsTable from "../../Component/ReportsTable/ReportsTable";
 
 const Reports = () => {
     return (
@@ -6,7 +7,7 @@ const Reports = () => {
             <div className='container-fluid'>
                 <div className="card">
                     <div className="card-body" >
-                        <h5 className="card-title"><b> Reports</b></h5>
+                        <ReportsTable />
 
                         
                     </div>
