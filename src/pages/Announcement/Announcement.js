@@ -1,4 +1,5 @@
 import React from "react";
+import AnnouncementTable from "../../Component/AnnouncementTable/AnnouncementTable";
 
 const Announcement = () => {
     return (
@@ -6,9 +7,7 @@ const Announcement = () => {
             <div className='container-fluid'>
                 <div className="card">
                     <div className="card-body" >
-                        <h5 className="card-title"><b> Announcement</b></h5>
-
-                        
+                       <AnnouncementTable /> 
                     </div>
                 </div>
             </div>

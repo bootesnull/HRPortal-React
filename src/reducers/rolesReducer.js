@@ -11,6 +11,26 @@ const initialState = {
 
 };
 
+// roles list API
+export const rolesList = async (callback) => {
+  try {
+      const response = await fetch(
+          `${API_URL}/api/rbac/role/list`,
+          {
+              method: "GET",
+              headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`
+              },
+          }
+      );
+      let data = await response.json();
+      //console.log(data.data);
+      callback(data.data)
+  } catch (e) {
+      console.log("Error", e.response.data);
+  }
+}
 
 
 // Role ADD 

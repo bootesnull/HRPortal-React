@@ -1,42 +1,22 @@
 import React, { useState, useEffect } from "react";
 import {  useSelector } from "react-redux";
-import { } from "../../reducers/userReducer";
-import { API_URL, token } from '../../api'
+import { usersList } from "../../reducers/userReducer";
+
 import { Link } from "react-router-dom";
 const UsersTable = () => {
     const [userTbData, setUserTbData] = useState([{}]);
     const userDetails = useSelector((state) => state.Users)
-    const [fetchUserList, setFetchUserList] = useState([{}])
-   
-    useEffect(() => {
-        const usersList = async () => {
-            try {
-                const response = await fetch(
-                    `${API_URL}/api/user/list`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`
-                        },
-                    }
-                );
-                let data = await response.json();
-                console.log(data.data);
-                setFetchUserList(data.data)
 
-            } catch (e) {
-                // console.log("Error", e.response.data);
-            }
+
+
+    useEffect(()=> {
+        const callback = (data) => {
+            setUserTbData([...data]);
         }
-        usersList()
-    }, [userDetails])
+        usersList(callback);
+    },[userDetails])
 
-
-
-    useEffect(() => {
-        setUserTbData(fetchUserList)
-    }, [fetchUserList])
+  
 
     return (
         <div>

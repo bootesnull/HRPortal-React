@@ -1,4 +1,5 @@
 import React from "react";
+import EventsTable from "../../Component/EventsTable/EventsTable";
 
 const Events = () => {
     return (
@@ -6,7 +7,7 @@ const Events = () => {
             <div className='container-fluid'>
                 <div className="card">
                     <div className="card-body" >
-                        <h5 className="card-title"><b> Events</b></h5>
+                        <EventsTable />
 
                         
                     </div>

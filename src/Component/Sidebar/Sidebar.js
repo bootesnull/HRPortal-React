@@ -14,10 +14,16 @@ const Sidebar = () => {
                     <NavLink to='/' className='logoLink'><img className='logo' src={logo} alt='Company Logo' /></NavLink>
                 </li>
                 <li>
+                    <NavLink to='/attendence' > Attendence</NavLink>
+                </li>
+                <li>
                     <NavLink to='/roles' > Roles</NavLink>
                 </li>
                 <li>
                     <NavLink to='/permission'>Permission</NavLink>
+                </li>
+                <li>
+                    <NavLink to='/allow-permission'>Allow Permission</NavLink>
                 </li>
                 <li>
                     <NavLink to='/users-List'>Users List</NavLink>
@@ -30,6 +36,9 @@ const Sidebar = () => {
                 </li>
                 <li>
                     <NavLink to='/events'>Events</NavLink>
+                </li>
+                <li>
+                    <NavLink to='/reports'>Reports</NavLink>
                 </li>
                 <li>
                     <NavLink to='/logout' className="nav-item-bottom" id="logoutbtn" ><i className="fa fa-sign-out"> </i>Logout</NavLink>
