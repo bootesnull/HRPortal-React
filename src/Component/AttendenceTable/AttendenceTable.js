@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { attendencelist,  } from "../../reducers/attendenceReducer";
 
 
 const AttendenceTable = () => {
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const [attendenceTbData, setAttendenceTbData] = useState([{}]);
 
     useEffect(()=>{
@@ -24,42 +24,24 @@ const AttendenceTable = () => {
             <table className='table table-bordered'>
                 <thead>
                     <tr>
-                        <th>#ID</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Created at</th>
-                        {/* <th>Updated at</th> */}
+                        <th>Date</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                        <th>Total Time</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {attendenceTbData && attendenceTbData.map((announce, index) => {
+                    {attendenceTbData && attendenceTbData.map((attendence, index) => {
                         return (
                             <tr key={index}>
-                                <td>{announce.id}</td>
-                                <td>{announce.title}</td>
-                                <td>{announce.description}</td>
-                                <td>{announce?.created_at?.slice(0, 10)}</td>
-                                {/* <td>{announce?.updated_at?.slice(0, 10)}</td> */}
-                                <td>
-                                    <input type="checkbox"
-                                            className='cm-toggle'
-                                            checked={announce.status}
-                                            name="status"
-                                            id={announce.id}
-                                            value={announce.status}
-                                            // onChange={(e)=> handleUpdateStatus(e, announce.id) }
-                                    />        
-                                </td>
-                                <td>
-                                    <button className="btn btn-secondary  btn-sm mx-1"
-                                        
-                                    >Edit</button>
-                                    <button className="btn btn-secondary  btn-sm mx-1"
-                                        
-                                        >Delete</button>
-                                </td>
+                                <td>{attendence?.date?.slice(0, 10)}</td>
+                                <td>{attendence?.checkin?.slice(0, 10)}</td>
+                                <td>{attendence?.checkout?.slice(0, 10)}</td>
+                                <td>{attendence.hours}</td>
+                                <td>{attendence?.attendence}</td>
+                                <td><button className="btn btn-secondary  btn-sm mx-1">Edit</button></td>
                             </tr>
                         );
                     })}

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import "./roletable.css"
 import { useDispatch, useSelector } from 'react-redux';
-import { createRoleList, roleEdit, roleStatus, roleUserAssign } from '../../reducers/rolesReducer'
-import { API_URL, token } from '../../api'
+import { rolesList, createRoleList, roleEdit, roleStatus, roleUserAssign } from '../../reducers/rolesReducer'
+import { usersList } from '../../reducers/userReducer';
 import { toast  } from 'react-toastify';
 import TableModal from "../utils/TableModal";
 
@@ -66,43 +66,39 @@ const RoleTable = () => {
         dispatch(roleStatus({ value, id }))
     }
 
-    //   const handleUpdateStatus = (e,id,rolesData) => {
-    //     console.log(id,rolesData);
-    //     let newData = [...roleTbData]
-    //     let value = e.target.checked ? 1:0
-    //     newData[id]['status'] = value
-    //     setRoleTbData(newData)
-    //     dispatch(roleStatus({value,id}))
+     
 
-    //     console.log(e.target.value,e.target.checked);
+    // useEffect(() => {
+    //     const roleList = async () => {
+    //         try {
+    //             const response = await fetch(
+    //                 `${API_URL}/api/rbac/role/list`,
+    //                 {
+    //                     method: "GET",
+    //                     headers: {
+    //                         "Content-Type": "application/json",
+    //                         Authorization: `Bearer ${token}`
+    //                     },
+    //                 }
+    //             );
+    //             let data = await response.json();
 
-    // }
+    //             setFetchList(data.data)
 
-    
+    //         } catch (e) {
+    //             // console.log("Error", e.response.data);
+    //         }
+    //     }
+    //     roleList()
+    // }, [roleDetails])
 
-    useEffect(() => {
-        const roleList = async () => {
-            try {
-                const response = await fetch(
-                    `${API_URL}/api/rbac/role/list`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`
-                        },
-                    }
-                );
-                let data = await response.json();
 
-                setFetchList(data.data)
-
-            } catch (e) {
-                // console.log("Error", e.response.data);
-            }
+    useEffect(()=> {
+        const callback = (data) => {
+            setFetchList([...data]);
         }
-        roleList()
-    }, [roleDetails])
+        rolesList(callback);
+    },[roleDetails])
 
 
     useEffect(() => {
@@ -110,33 +106,14 @@ const RoleTable = () => {
     }, [fetchList])
 
 
-
     const [fetchUserList, setFetchUserList] = useState([{}])
 
-    /**************** */
-    useEffect(() => {
-        const usersList = async () => {
-            try {
-                const response = await fetch(
-                    `${API_URL}/api/user/list`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`
-                        },
-                    }
-                );
-                let data = await response.json();
-
-                setFetchUserList(data.data)
-
-            } catch (e) {
-                // console.log("Error", e.response.data);
-            }
+    useEffect(()=> {
+        const callback = (data) => {
+            setFetchUserList([...data]);
         }
-        usersList()
-    }, [])
+        usersList(callback);
+    },[])
 
 
     // assign role by user_id and role_id
@@ -149,36 +126,23 @@ const RoleTable = () => {
     }
 
 
-
-
-
     const handleRoleAssignSave = (e) => {
         e.preventDefault();
-        //console.log()
         dispatch(roleUserAssign(roleAssign))
         setShowBasicModal(false)
-
     }
-
-
 
     //add form-------------------------------
     const handleAddChange = (e) => {
-        // console.log("name",e.target.name,"value",e.target.value);
-        setAddForm((a) => {
-            return { ...a, [e.target.name]: e.target.value }
+        setAddForm((prevState) => {
+            return { ...prevState, [e.target.name]: e.target.value }
         })
-
     };
 
-
-
-
     const handleAddData = (e) => {
-        console.log(e);
         e.preventDefault();
-        console.log(addForm.name);
         dispatch(createRoleList(addForm.name))
+        e.target.reset();
     }
 
     //edit col---------------------------------
@@ -191,28 +155,21 @@ const RoleTable = () => {
 
     //edit col onChange
     const handleEditChange = (e) => {
-        setEditFormData((state) => {
-            return { ...state, [e.target.name]: e.target.value }
+        setEditFormData((prevState) => {
+            return { ...prevState, [e.target.name]: e.target.value }
         })
     };
 
     //edit save handler
     const handleEditSaveData = () => {
-
-        // newData[index] = editFormData
-        // setRoleTbData(newData)
         dispatch(roleEdit(editFormData))
         setEditTableCol(null);
-
     }
 
     //cancel edit handler
     const handleCancelEdit = () => {
         setEditTableCol(null);
     };
-
-
-
 
     //show Modal Handler
     const showModal = () => {
@@ -278,11 +235,11 @@ const RoleTable = () => {
                                     </td>
                                     <td>{editTableCol === rolesData.id ?
                                         (<span>
-                                            <button type='submit' className="btn btn-outline-secondary btn-sm mx-1" onClick={() => handleEditSaveData(rolesData)}>Save</button>
-                                            <button type="button" className="btn btn-outline-secondary btn-sm mx-1" onClick={handleCancelEdit}>Cancel</button>
+                                            <button type='submit' className="btn btn-secondary btn-sm mx-1" onClick={() => handleEditSaveData(rolesData)}>Save</button>
+                                            <button type="button" className="btn btn-secondary btn-sm mx-1" onClick={handleCancelEdit}>Cancel</button>
                                         </span>
                                         ) :
-                                        (<button type="button" className="btn btn-outline-secondary btn-sm mx-1" onClick={() => handleEditCol(rolesData)}>Edit</button>)
+                                        (<button type="button" className="btn btn-secondary btn-sm mx-1" onClick={() => handleEditCol(rolesData)}>Edit</button>)
                                     }
                                     </td>
                                 </tr>

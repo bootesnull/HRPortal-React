@@ -10,13 +10,14 @@ import TableModal from '../utils/TableModal';
 const Permission = () => {
     const [flag, setFlag] = useState(false)
     const dispatch = useDispatch();
+
+
     const permissionDetails = useSelector((state) => state?.Permissions)
     const permissionListing = useSelector((state) => state?.Permissions?.permissionListing)
-    console.log(permissionListing);
 
-  
+
     const [permissionTbData, setPermissionTbData] = useState([{}]);
-    console.log(permissionTbData);
+
     const [permissionAdd, setPermissionAdd] = useState({
         parent: "",
         permissionName: "",
@@ -35,9 +36,11 @@ const Permission = () => {
         permissionList(callback)
 
     }, [permissionDetails]);
+
+
     useEffect(() => {
-        if(!permissionListing) return;
-        setPermissionEdit({...permissionListing.data})
+        if (!permissionListing) return;
+        setPermissionEdit({ ...permissionListing.data })
 
     }, [permissionListing]);
 
@@ -50,44 +53,40 @@ const Permission = () => {
             toast.error(permissionDetails.message)
         }
     }, [permissionDetails]);
-console.log(permissionEdit);
 
-const {id,parent,permission_name:permissionName} = permissionEdit
-const[state,setState] = useState({
-    id:'',
-    parent:'',
-    permissionName:""
-})
-console.log(state);
+
+    useEffect(() => {
+        setState({
+            ...permissionEdit
+        })
+    }, [permissionEdit])
+
+    const [state, setState] = useState()
+
+
 
     // permission status updates
     const handleUpdateStatus = (e, id) => {
         let value = e.target.checked ? 1 : 0;
-        // console.log(value)
         dispatch(permissionStatus({ id, value }))
     };
 
-
     // permission  onChange  and add
     const handleAddChange = (e) => {
-        setPermissionAdd((a) => {
-            return { ...a, [e.target.name]: e.target.value }
+        setPermissionAdd((pervState) => {
+            return { ...pervState, [e.target.name]: e.target.value }
         })
-        //console.log("name", e.target.name, "value", e.target.value);
     }
 
     const handleEditChange = (e) => {
-
-        setState((a) => {
-            return { ...a, [e.target.name]: e.target.value }
+        setState((pervState) => {
+            return { ...pervState, [e.target.name]: e.target.value }
         })
-        //console.log("name", e.target.name, "value", e.target.value);
+        // console.log("name", e.target.name, "value", e.target.value);
     }
 
     const handleAddPermission = (e) => {
-        // console.log(e);
         e.preventDefault();
-        // console.log(permissionAdd)
         dispatch(createPermission(permissionAdd));
         setShowBasicModal(false)
     }
@@ -97,18 +96,19 @@ console.log(state);
         setShowBasicModal(true)
     }
 
-    const handleEditPermission = (e, id) => {
+    const handleEditPermission = (e) => {
         e.preventDefault();
-         dispatch(editPermission(permissionEdit));
-         setShowBasicModal(false)
+        dispatch(editPermission(state));
+        setShowBasicModal(false)
     }
-    const handleEdit = (id) =>{
-            setFlag(!flag)
-            setModalTitle('Edit Permission')
-            showModal()
-            dispatch(editFetchPermission(id))
+
+    const handleEdit = (id) => {
+       setModalTitle('Edit Permission')
+        showModal()
+        dispatch(editFetchPermission(id))
+        setFlag(true)
     }
-  
+
 
     // Delete handler
     // const handleDelete = (id) => {
@@ -159,7 +159,7 @@ console.log(state);
                                 </td>
                                 <td>
                                     <button className="btn btn-secondary  btn-sm mx-1"
-                                        onClick={()=>handleEdit(permit.id)}
+                                        onClick={() => handleEdit(permit.id)}
                                     >Edit</button>
                                     {/* <button className="btn btn-secondary  btn-sm mx-1" onClick={() => handleDelete(permit.id)}>Delete</button> */}
                                 </td>
@@ -182,15 +182,15 @@ console.log(state);
                             <form onSubmit={handleEditPermission} >
                                 <div className="mb-3">
                                     <label className="form-label">#ID</label>
-                                    <input type="text" className="form-control" defaultValue={id}  placeholder='Id' name="id" onChange={handleEditChange} required="required" autoComplete="off" />
+                                    <input type="text" className="form-control" value={state.id} placeholder='Id' name="id" onChange={handleEditChange} required="required" autoComplete="off" />
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label">Parent edit</label>
-                                    <input type="text" className="form-control" defaultValue={parent}  placeholder='Parent Id' name="parent" onChange={handleEditChange} required="required" autoComplete="off" />
+                                    <input type="text" className="form-control" value={state.parent} placeholder='Parent Id' name="parent" onChange={handleEditChange} required="required" autoComplete="off" />
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label">Permission Name</label>
-                                    <input type="text" className="form-control" id="" defaultValue={permissionName} placeholder='Permission Name' name="permissionName" onChange={handleEditChange} required="required" autoComplete="off" />
+                                    <input type="text" className="form-control" id="" value={state.permission_name} placeholder='Permission Name' name="permission_name" onChange={handleEditChange} required="required" autoComplete="off" />
                                 </div>
 
                                 <div className="modal-footer">

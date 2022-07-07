@@ -103,7 +103,37 @@ const eventsReducer = createSlice ({
         
     },
     extraReducers : {
+        [eventslist.fulfilled] : (state, action) => {
+            return {...action.payload}
+        },
+        [eventslist.pending] : (state, action) => {
+            return {...action.payload}
+        },
+        [eventslist.fulfilled] : (state, action) => {
+            return {...action.payload}
+        },
 
+        [eventCreate.fulfilled] : (state, action) => {
+            return {...action.payload}
+        },
+        [eventCreate.pending] : (state, action) => {
+            return {...action.payload}
+        },
+        [eventCreate.fulfilled] : (state, action) => {
+            return {...action.payload}
+        },
+
+        [eventDelete.fulfilled] : (state, action) => {
+            return {...action.payload}
+        },
+        [eventDelete.pending] : (state, action) => {
+            return {...action.payload}
+        },
+        [eventDelete.fulfilled] : (state, action) => {
+            return {...action.payload}
+        },
+
+       
     },
 
 });

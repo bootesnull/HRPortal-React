@@ -95,11 +95,10 @@ export const createPermission = createAsyncThunk(
 
 
 //permission edit fetch api
-
-
 export const editFetchPermission = createAsyncThunk(
     'permission/permission-fetch',
     async (id, thunkAPI) => {
+        console.log(id)
         try {
             const response = await fetch(
                 `${API_URL}/api/rbac/permission/get-by-id?id=${id}`,
@@ -124,7 +123,7 @@ export const editFetchPermission = createAsyncThunk(
 //permission edit  api
 export const editPermission = createAsyncThunk(
     'permission/permission-edit',
-    async ({ id, permissionName, parent }, thunkAPI) => {
+    async ({ id, permission_name, parent }, thunkAPI) => {
         try {
             const response = await fetch(
                 `${API_URL}/api/rbac/permission/edit`,
@@ -137,7 +136,7 @@ export const editPermission = createAsyncThunk(
                     },
                     body: JSON.stringify({
                         id: id,
-                        permission_name: permissionName,
+                        permission_name: permission_name,
                         parent: +parent,
                     })
                 }
@@ -219,6 +218,16 @@ const permissionReducer = createSlice({
         },
         [editFetchPermission.rejected] : (state, action) => {
             return {...action.payload}
+        },
+
+        [editPermission.fulfilled] : (state, action) => {
+            return { ...action.payload }
+        },
+        [editPermission.pending] : (state, aciton ) => {
+            return { ...aciton.payload }
+        },
+        [editPermission.rejected] : (state, aciton) => {
+            return { ...aciton.payload }
         },
 
         [createPermission.fulfilled]: (state, aciton) => {

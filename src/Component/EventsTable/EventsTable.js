@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { eventslist, eventDelete, eventCreate } from "../../reducers/eventsReducer";
 import TableModal from "../utils/TableModal";
 
@@ -7,6 +7,7 @@ import TableModal from "../utils/TableModal";
 const EventsTable = () => {
 
     const dispatch = useDispatch();
+    const eventList = useSelector((state)=> state.Events)
     const [eventTbData, setEventTbData] = useState([{}]);
     const [showBasicModal, setShowBasicModal] = useState(false);
     const [modalTitle, setModalTitle] = useState('');
@@ -21,7 +22,7 @@ const EventsTable = () => {
             setEventTbData([...data])
         }
         eventslist(callback)
-    },[])
+    },[eventList])
 
     // Delete handler
     const handleDelete = (id) => {
