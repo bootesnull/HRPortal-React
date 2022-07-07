@@ -82,3 +82,7 @@
 	-moz-transition: ease .3s;
 	-o-transition: ease .3s;
 }
+
+
+.tab-pane { padding-top: 15px;}
+.nav-link { cursor: pointer;}

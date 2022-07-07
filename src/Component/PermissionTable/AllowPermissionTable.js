@@ -126,13 +126,13 @@ const AllowPermissionTable = () => {
 
 
 useEffect(()=>{
-    let a = fetchRolesList.filter((item,index)=>editAllowRolePermission.role_id===item.id)
-    setSelectRoleName(a[0]?.name)
+    let fetchRoleName = fetchRolesList.filter((item,index)=>editAllowRolePermission.role_id===item.id)
+    setSelectRoleName(fetchRoleName[0]?.name)
 
 },[editAllowRolePermission?.role_id])
 useEffect(()=>{
-    let a = fetchPermissionList.filter((item,index)=>editAllowRolePermission.permission_id===item.id)
-    setSelectPermissionName(a[0]?.permission_name)
+    let fetchPermissionName = fetchPermissionList.filter((item,index)=>editAllowRolePermission.permission_id===item.id)
+    setSelectPermissionName(fetchPermissionName[0]?.permission_name)
 
 },[editAllowRolePermission?.permission_id])
    
