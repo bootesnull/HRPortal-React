@@ -84,7 +84,6 @@ const AllowPermissionTable = () => {
     }
 
     const handleEditChange = (e) => {
-       
         setEditAllowRolePermission((prevState)=> {
             return { ...prevState, [e.target.name]:e.target.value}
         })
@@ -123,18 +122,17 @@ const AllowPermissionTable = () => {
     }
 
 
+    useEffect(()=>{
+        let fetchRoleName = fetchRolesList.filter((item,index)=>editAllowRolePermission.role_id===item.id)
+        setSelectRoleName(fetchRoleName[0]?.name)
 
+    },[editAllowRolePermission?.role_id])
 
-useEffect(()=>{
-    let a = fetchRolesList.filter((item,index)=>editAllowRolePermission.role_id===item.id)
-    setSelectRoleName(a[0]?.name)
+    useEffect(()=>{
+        let fetchPermissionName = fetchPermissionList.filter((item,index)=>editAllowRolePermission.permission_id===item.id)
+        setSelectPermissionName(fetchPermissionName[0]?.permission_name)
 
-},[editAllowRolePermission?.role_id])
-useEffect(()=>{
-    let a = fetchPermissionList.filter((item,index)=>editAllowRolePermission.permission_id===item.id)
-    setSelectPermissionName(a[0]?.permission_name)
-
-},[editAllowRolePermission?.permission_id])
+    },[editAllowRolePermission?.permission_id])
    
 
    

@@ -132,6 +132,32 @@ export const leaveStatus = createAsyncThunk(
 );
 
 
+
+
+
+// leave list user-by-leave
+export const leaveListbyUser = async (callback) => {
+    try {
+        const response = await fetch(
+            `${API_URL}/api/leaves/leaves/list`,
+             {
+                 method: "GET",
+                 headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                 },
+            }
+        );
+        let data = await response.json();
+        callback(data.data)
+    } catch (e) {
+        console.log("Error", e.response.data);
+    }
+}
+
+
+
+
     const leavesReducer = createSlice({
         name:"leaves",
         initialState,
@@ -140,6 +166,16 @@ export const leaveStatus = createAsyncThunk(
         },
 
         extraReducers:{
+            [leaveList.fulfilled] : (state, action) => {
+                return {...action.payload}
+            },
+            [leaveList.pending] : (state, action) => {
+                return {...action.payload}
+            },
+            [leaveList.rejected] : (state, action) => {
+                return { ...action.payload}
+            },
+
             [leaveStatus.fulfilled] : (state, action) => {
                 return {...action.payload}
             },

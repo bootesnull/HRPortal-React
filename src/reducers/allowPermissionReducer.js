@@ -127,7 +127,7 @@ export const allowPermissionView = createAsyncThunk(
 export const allowPermissionEdit = createAsyncThunk(
     'allowPermission/allow-permission-edit',
     async({id, role_id, permission_id}, thunkAPI) => {
-        console.log("==================================",id, role_id, permission_id);
+        //console.log("==================================",id, role_id, permission_id);
         try{
             const response = await fetch(
                 `${API_URL}/api/rbac/allow-role-permission/edit`,
