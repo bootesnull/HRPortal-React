@@ -12,7 +12,7 @@ const initialState = {
 
 
 //events type List API
-export const eventslist = async (callback) => {
+export const eventTypelist = async (callback) => {
     try {
         const response = await fetch (
             `${API_URL}/api/events/event_type/list`,
@@ -26,7 +26,7 @@ export const eventslist = async (callback) => {
         );
         let data = await response.json();
         callback(data.data);
-        console.log(data);
+       // console.log(data);
     }catch (e) {
         console.log("error", e.response.data);
     }
@@ -34,8 +34,8 @@ export const eventslist = async (callback) => {
 
 
 
-// Event create API
-export const eventCreate = createAsyncThunk(
+// Event Type create API
+export const eventTypeCreate = createAsyncThunk(
     'events/event-create',
     async ( { name}, thunkAPI) => {
         try{
@@ -63,24 +63,20 @@ export const eventCreate = createAsyncThunk(
     }
 );  
 
-
-
-// Event delete API
-export const eventDelete = createAsyncThunk(
-    'events/event-delete',
+//Event Type view by id 
+export const eventTypeView = createAsyncThunk(
+    'events/event-type-view',
     async ( id, thunkAPI) => {
         console.log(id)
         try{
             const response = await fetch(
-                `${API_URL}/api/events/events/delete?id=${id}`,
+                `${API_URL}/api/events/event_type/view?id=${id}`,
                 {
-                    method: "DELETE",
+                    method: "GET",
                     headers : {
-                        Accept : "application/json",
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`
                     },
-                    body: JSON.stringify(id)
                 }
             );
             let data = response.json();
@@ -94,6 +90,95 @@ export const eventDelete = createAsyncThunk(
 );  
 
 
+// Event Type Edit API
+export const eventTypeEdit = createAsyncThunk(
+    'events/event-type-edit',
+    async ( {id, name}, thunkAPI) => {
+        try{
+            const response = await fetch(
+                `${API_URL}/api/events/event_type/edit`,
+                {
+                    method: "PUT",
+                    headers : {
+                        Accept : "application/json",
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        id:id,
+                        name: name,
+                    })
+                }
+            );
+            let data = response.json();
+           // console.log(data);
+            return data;
+        }catch(e) {
+            console.log("error", e.response.data)
+            thunkAPI.rejectWithValue(e.response.data)
+        }
+    }
+);  
+
+
+// Event Type Edit API
+export const eventCreate = createAsyncThunk(
+    'events/event-type-edit',
+    async ( {id, name}, thunkAPI) => {
+        try{
+            const response = await fetch(
+                `${API_URL}/api/events/event_type/edit`,
+                {
+                    method: "PUT",
+                    headers : {
+                        Accept : "application/json",
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        id:id,
+                        name: name,
+                    })
+                }
+            );
+            let data = response.json();
+           // console.log(data);
+            return data;
+        }catch(e) {
+            console.log("error", e.response.data)
+            thunkAPI.rejectWithValue(e.response.data)
+        }
+    }
+); 
+
+// Event delete API
+export const eventDelete = createAsyncThunk(
+    'events/event-delete',
+    async(id, thunkAPI) => {
+        try{
+            const response = await fetch(
+                `${API_URL}/api/events/events/delete?id=${id}`,
+                {
+                    method: "PUT",
+                    headers : {
+                        Accepts: "application/json",
+                        "Content-Type" : "application/json",
+                        Authorization : `Bearer ${token}`,
+                    },
+
+                }
+            )
+            let data = await response.json();
+            console.log(data)
+            return data;
+        }catch(e){
+            console.log("error", e.response.data);
+            thunkAPI.rejectWithValue(e.response.data);
+        }
+    }
+);
+
+
 
 
 const eventsReducer = createSlice ({
@@ -103,37 +188,47 @@ const eventsReducer = createSlice ({
         
     },
     extraReducers : {
-        [eventslist.fulfilled] : (state, action) => {
+        [eventTypelist.fulfilled] : (state, action) => {
             return {...action.payload}
         },
-        [eventslist.pending] : (state, action) => {
+        [eventTypelist.pending] : (state, action) => {
             return {...action.payload}
         },
-        [eventslist.fulfilled] : (state, action) => {
-            return {...action.payload}
-        },
-
-        [eventCreate.fulfilled] : (state, action) => {
-            return {...action.payload}
-        },
-        [eventCreate.pending] : (state, action) => {
-            return {...action.payload}
-        },
-        [eventCreate.fulfilled] : (state, action) => {
+        [eventTypelist.rejected] : (state, action) => {
             return {...action.payload}
         },
 
-        [eventDelete.fulfilled] : (state, action) => {
+        [eventTypeCreate.fulfilled] : (state, action) => {
             return {...action.payload}
         },
-        [eventDelete.pending] : (state, action) => {
+        [eventTypeCreate.pending] : (state, action) => {
             return {...action.payload}
         },
-        [eventDelete.fulfilled] : (state, action) => {
+        [eventTypeCreate.rejected] : (state, action) => {
             return {...action.payload}
         },
 
-       
+        [eventTypeView.fulfilled] : (state, action) => {
+            return {...action.payload}
+        },
+        [eventTypeView.pending] : (state, action) => {
+            return {...action.payload}
+        },
+        [eventTypeView.rejected] : (state, action) => {
+            return {...action.payload}
+        },
+
+        [eventTypeEdit.fulfilled] : (state, action) => {
+            return {...action.payload}
+        },
+        [eventTypeEdit.pending] : (state, action) => {
+            return {...action.payload}
+        },
+        [eventTypeEdit.rejected] : (state, action) => {
+            return {...action.payload}
+        },
+
+        
     },
 
 });
