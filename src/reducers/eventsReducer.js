@@ -137,7 +137,7 @@ export const eventsList = async(callback) => {
             );
             let data = await response.json();
             callback(data.data)
-            console.log(data)
+            //console.log(data)
         }catch(e){
             console.log("error", e.response.data);
         }
@@ -149,7 +149,8 @@ export const eventsList = async(callback) => {
 // Event Create API
 export const eventsCreate = createAsyncThunk(
     'events/event-create',
-    async({title, event_type_id, date, description, is_holiday, holiday_from_date, holiday_to_date, banner}, thunkAPI) => {
+    async({title, event_type_id, description, is_holiday, date, holiday_from_date, holiday_to_date, banner}, thunkAPI) => {
+        //console.log(title, event_type_id, description, is_holiday, date, holiday_from_date, holiday_to_date, banner)
         try{
             const response = await fetch(
                 `${API_URL}/api/events/events/create`,
@@ -161,7 +162,14 @@ export const eventsCreate = createAsyncThunk(
                         Authorization: `Bearer ${token}`,
                     },
                     body: JSON.stringify({
-                        title, event_type_id, date, description, is_holiday, holiday_from_date, holiday_to_date, banner
+                        title, 
+                        event_type_id, 
+                        description, 
+                        is_holiday, 
+                        date ,
+                        holiday_from_date , 
+                        holiday_to_date, 
+                        banner,
                     })
                 }
             );

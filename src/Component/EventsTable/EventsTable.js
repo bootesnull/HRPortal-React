@@ -5,6 +5,8 @@ import TableModal from "../utils/TableModal";
 import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Moment from 'react-moment';
+import moment from 'moment'
 
 
 const EventsTable = () => {
@@ -32,7 +34,7 @@ const EventsTable = () => {
         if(eventRendering.statusCode === 201) {
             toast.success(eventRendering.message);
         }
-        if(eventRendering.statusCode === 404) {
+        if(eventRendering.statusCode === 500) {
             toast.error(eventRendering.message);
         }
     }, []);
@@ -95,18 +97,50 @@ const EventsTable = () => {
 
     const [eventlistData, setEventlistData] = useState([{}]);
 
+    const [eventDate, setEventDate] = useState(new Date());
+    const [eventFromDate, setEventFromDate] = useState("");
+    const [eventToDate, setEventToDate] = useState("")
+
     const [addEvent, setAddEvent] = useState({
         title:'', 
         event_type_id:'', 
-        date:new Date(),
         description:'',
         is_holiday:'', 
-        holiday_from_date: new Date(), 
-        holiday_to_date: new Date(),
         banner:'',
+        holiday_from_date:'',
+        holiday_to_date:'',
+        date:'',
+   
     });
-    console.log(addEvent.holiday_from_date)
 
+
+    useEffect(()=>{
+        setAddEvent({
+            ...addEvent,
+            date:moment(eventDate).format('DD/MM/YYYY'),
+            holiday_from_date:moment(eventFromDate).format('DD/MM/YYYY'),
+            holiday_to_date:moment(eventToDate).format('DD/MM/YYYY')
+        })
+    },[eventDate,eventFromDate,eventToDate])
+ 
+    //console.log(addEvent)
+
+
+    const handleEventAddChange = (e) => {
+        setAddEvent((prevState) => {
+            return {...prevState, [e.target.name]:e.target.value }
+        })
+       // console.log(e.target.name,e.target.value)
+    }
+
+    const handleEventSave = (e) => {
+        e.preventDefault();
+        dispatch(eventsCreate(addEvent))
+        console.log(addEvent)
+        e.target.reset();
+    }
+
+    // Event list API
     useEffect(()=> {
         const callback = (data) => {
             setEventlistData([...data])
@@ -114,32 +148,12 @@ const EventsTable = () => {
         eventsList(callback);
     },[eventRendering])
 
-
-
-    const handleEventAddChange = (e) => {
-        setAddEvent((prevState) => {
-            return {...prevState, [e.target.name]:e.target.value }
-        })
-        //console.log(e.target.name,e.target.value)
-    }
-
-    const handleEventSave = (e) => {
-        e.preventDefault();
-        dispatch(eventsCreate(addEvent))
-        console.log(addEvent)
-    }
-
        // Delete handler
     const handleDelete = (id) => {
-        // const newData = announcementTbData.filter((item) => item.id !== id);
-        // setPermissionTbData(newData);
-        //console.log(id)
         dispatch(eventsDelete(id))
     };
 
-//    const [eventDate, setEventDate] = useState(new Date());
-//    const [eventFromDate, setEventFromDate] = useState(new Date());
-//    const [eventToDate, setEventToDate] = useState(new Date())
+  
 
     return(
         <div>
@@ -158,7 +172,7 @@ const EventsTable = () => {
                             <form className="row" onSubmit={handleEventSave} >
                                 <div className="col-lg-3 mb-3">
                                     <label className="form-label">Title</label>
-                                    <input type="text" className="form-control" placeholder='Title' name="title" onChange={handleEventAddChange} required="required" autoComplete="off" />
+                                    <input type="text" className="form-control" placeholder='Title' name="title" onChange={handleEventAddChange} autoComplete="off" />
                                 </div>
                                 <div className="col-lg-3 mb-3">
                                     <label className="form-label">Event Type</label>
@@ -167,29 +181,37 @@ const EventsTable = () => {
                                     {eventTbData && eventTbData.map((eventType, id) => {return   <option key={id} value={eventType.id}>{eventType.name}</option>})}
                                     </select>
                                 </div>
-                                <div className="col-lg-3 mb-3">
-                                    <label className="form-label">Date</label>
-                                    {/* <DatePicker name="date" className="form-control" selected={eventDate} onChange={(date) => setEventDate(date)} /> */}
-                                </div>
+                                
                                 <div className="col-lg-3 mb-3">
                                     <label className="form-label">Description</label>
-                                    <input type="text" className="form-control" placeholder='Description' name="description" onChange={handleEventAddChange} required="required" autoComplete="off" />
+                                    <input type="text" className="form-control" placeholder='Description' name="description" onChange={handleEventAddChange} autoComplete="off" />
                                 </div>
                                 <div className="col-lg-3 mb-3">
                                     <label className="form-label">Is Holiday</label>
-                                    <input type="text" className="form-control" placeholder='is_holiday' name="is_holiday" onChange={handleEventAddChange} required="required" autoComplete="off" />
+                                    <select  className="form-select" name="is_holiday" onChange={handleEventAddChange}>
+                                        <option defaultValue>Is Holiday</option>
+                                        <option value="1">Yes</option>
+                                        <option value="0">No</option>
+                                    </select>
+                                </div>
+                                <div className="col-lg-3 mb-3">
+                                    <label className="form-label">Date</label>
+                                    <DatePicker  name="date" dateFormat="dd/MM/yyyy" selected={eventDate} 
+                                    onChange={(date) => {setEventDate(date); console.log(date) } }
+                                    
+                                    placeholderText="Select Date" className="form-control"   />
                                 </div>
                                 <div className="col-lg-3 mb-3">
                                     <label className="form-label">Holiday From Date</label>
-                                    <DatePicker name="holiday_from_date" className="form-control"  selected={addEvent.holiday_from_date} onChange={(date) => handleEventAddChange(date)} />
+                                    <DatePicker name="holiday_from_date" dateFormat="dd/MM/yyyy" selected={eventFromDate} onChange={(date) => setEventFromDate(date)  } placeholderText="Select Date" className="form-control" />
                                 </div>
                                 <div className="col-lg-3 mb-3">
                                     <label className="form-label">Holiday To Date</label>
-                                    {/* <DatePicker name="holiday_to_date" className="form-control"  selected={eventToDate} onChange={(date) => setEventToDate(date)} /> */}
+                                    <DatePicker name="holiday_from_date" dateFormat="dd/MM/yyyy" selected={eventToDate} onChange={(date) => setEventToDate(date) }  placeholderText="Select Date" className="form-control" />
                                 </div> 
                                 <div className="col-lg-3 mb-3">
                                     <label className="form-label">Banner</label>
-                                    <input type="file" className="form-control" name="banner" onChange={handleEventAddChange} required="required" autoComplete="off" />
+                                    <input type="file" className="form-control" name="banner" onChange={handleEventAddChange}  autoComplete="off" />
                                 </div>
 
                                 <div className="col-lg-12 mb-3">
@@ -209,8 +231,8 @@ const EventsTable = () => {
                                         <th>Is Holiday</th>
                                         <th>From Date</th>
                                         <th>To Date</th>
-                                        <th>Banner</th>
                                         <th>Status</th>
+                                        <th>Banner</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -223,10 +245,11 @@ const EventsTable = () => {
                                                 <td>{events.event_type_name}</td>
                                                 <td>{events.events_descriptions}</td>
                                                 <td>{events.is_holiday}</td>
-                                                <td>{events?.holiday_from_date?.slice(0, 10)}</td>
-                                                <td>{events?.holiday_to_date?.slice(0, 10)}</td>
-                                                <td>{events.image_url}</td>
+                                                <td><Moment format="YYYY/MM/DD">{events.holiday_from_date}</Moment></td>
+                                                <td><Moment format="YYYY/MM/DD">{events.holiday_to_date}</Moment></td>
                                                 <td>{events.status}</td>
+                                                <td>{events.image_url}</td>
+                                                
                                                 <td>
                                                     <button className="btn btn-secondary  btn-sm mx-1"
                                                                                                             
