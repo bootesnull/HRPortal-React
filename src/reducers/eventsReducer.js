@@ -149,28 +149,22 @@ export const eventsList = async(callback) => {
 // Event Create API
 export const eventsCreate = createAsyncThunk(
     'events/event-create',
-    async({title, event_type_id, description, is_holiday, date, holiday_from_date, holiday_to_date, banner}, thunkAPI) => {
-        //console.log(title, event_type_id, description, is_holiday, date, holiday_from_date, holiday_to_date, banner)
+    async(formData, thunkAPI) => {
+        console.log( "ghi", formData)
+
         try{
             const response = await fetch(
                 `${API_URL}/api/events/events/create`,
                 {
                     method: "POST",
                     headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
+                        //"Accept": "application/json",
+                        //"Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`,
+                        //"Accept-Encoding": 'gzip, deflate',
+                        //"Content-Type": "multipart/form-data",
                     },
-                    body: JSON.stringify({
-                        title, 
-                        event_type_id, 
-                        description, 
-                        is_holiday, 
-                        date ,
-                        holiday_from_date , 
-                        holiday_to_date, 
-                        banner,
-                    })
+                    body: formData
                 }
             );
             let data = await response.json();
@@ -187,6 +181,7 @@ export const eventsCreate = createAsyncThunk(
 export const eventsViewId = createAsyncThunk(
     'events/event-view-id',
     async(id, thunkAPI) => {
+       // console.log('edit event',id)
         try{
             const response = await fetch(
                 `${API_URL}/api/events/events/view?id=${id}`,
@@ -212,20 +207,18 @@ export const eventsViewId = createAsyncThunk(
 // Event Edit API
 export const eventsEdit = createAsyncThunk(
     'events/event-edit',
-    async({event_id, title, event_type_id, date, description, is_holiday, holiday_from_date, holiday_to_date, banner}, thunkAPI) => {
+    async(formData, thunkAPI) => {
         try{
             const response = await fetch(
                 `${API_URL}/api/events/events/edit`,
                 {
-                    method: "POST",
+                    method: "PUT",
                     headers: {
                         Accept: "application/json",
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`,
                     },
-                    body: JSON.stringify({
-                        event_id, title, event_type_id, date, description, is_holiday, holiday_from_date, holiday_to_date, banner
-                    })
+                    body: formData
                 }
             );
             let data = await response.json();

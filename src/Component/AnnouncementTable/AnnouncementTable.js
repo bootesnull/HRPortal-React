@@ -63,7 +63,7 @@ const AnnouncementTable = () => {
         dispatch(announcementEdit(editstate))
         setShowBasicModal(false)
     }
-    console.log(editstate)
+    //console.log(editstate)
 
    
 
