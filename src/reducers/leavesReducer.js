@@ -12,7 +12,7 @@ const initialState = {
 
 
 // leave list type API
-export const leaveList = async (callback) => {
+export const leaveTypeList = async (callback) => {
     try {
         const response = await fetch(
             `${API_URL}/api/leaves/leave-type/list`,
@@ -139,7 +139,7 @@ export const leaveStatus = createAsyncThunk(
 export const leaveListbyUser = async (callback) => {
     try {
         const response = await fetch(
-            `${API_URL}/api/leaves/leaves/list`,
+            `${API_URL}/api/leaves/leaves/user-by-leave`,
              {
                  method: "GET",
                  headers: {
@@ -156,6 +156,93 @@ export const leaveListbyUser = async (callback) => {
 }
 
 
+// delete leave by auth and leave id
+export const leaveDelete = createAsyncThunk(
+    'leaves/leave-delete',
+    async ( id, thunkAPI) => {
+        console.log(id)
+        try{
+            const response = await fetch(
+                `${API_URL}/api/leaves/leaves/delete-leave?id=${id}}`,
+                {
+                    method: "DELETE",
+                    headers : {
+                        Accept : "application/json",
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                }
+            );
+            let data = response.json();
+            console.log(data);
+            return data;
+        }catch(e) {
+            console.log("error", e.response.data)
+            thunkAPI.rejectWithValue(e.response.data)
+        }
+    }
+); 
+
+
+// Leave  - user list leaves by leave type id
+export const leaveViewId = createAsyncThunk(
+    'leaves/leave-view-id',
+    async(id, thunkAPI) => {
+        console.log(id)
+        try{
+            const response = await fetch(
+                `${API_URL}/api/leaves/leaves/leave-list-by-leave-type?leave_type_id=${id}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            let data = await response.json();
+            console.log(data)
+            return data;
+        }catch(e){
+            console.log("error", e.response.data);
+            thunkAPI.rejectWithValue(e.response.data);
+        }
+    }
+);
+
+
+export const leaveEdit = createAsyncThunk(
+    'leaves/leave-edit',
+    async( thunkAPI) => {
+        try{
+            const response = await fetch(
+            `${API_URL}/api/leaves/leave-type/edit`, {
+                    method : "PUT",
+                    headers : {
+                        Accept : "application/json",
+                        "Content-Type" : "application/json",
+                        Authorization : `Bearer ${token}`,    
+                    },
+                    body : JSON.stringify({
+                        
+                    })
+                }
+            );
+            let data = response.json();
+            console.log(data);
+            return data;
+
+        }catch(e){
+            console.log(e.response.data);
+            thunkAPI.rejectWithValue(e.response.data);
+        }
+    }
+)
+
+
+
+
+
 
 
     const leavesReducer = createSlice({
@@ -166,13 +253,13 @@ export const leaveListbyUser = async (callback) => {
         },
 
         extraReducers:{
-            [leaveList.fulfilled] : (state, action) => {
+            [leaveTypeList.fulfilled] : (state, action) => {
                 return {...action.payload}
             },
-            [leaveList.pending] : (state, action) => {
+            [leaveTypeList.pending] : (state, action) => {
                 return {...action.payload}
             },
-            [leaveList.rejected] : (state, action) => {
+            [leaveTypeList.rejected] : (state, action) => {
                 return { ...action.payload}
             },
 
@@ -194,7 +281,48 @@ export const leaveListbyUser = async (callback) => {
             },
             [leaveStatus.rejected] : (state, action) => {
                 return {...action.payload}
-            }
+            },
+
+
+            [leaveListbyUser.fulfilled] : (state, action) => {
+                return {...action.payload}
+            },
+            [leaveListbyUser.pending] : (state, action) => {
+                return {...action.payload}
+            },
+            [leaveListbyUser.rejected] : (state, action) => {
+                return {...action.payload}
+            },
+
+            [leaveDelete.fulfilled] : (state, action) => {
+                return {...action.payload}
+            },
+            [leaveDelete.pending] : (state, action) => {
+                return {...action.payload}
+            },
+            [leaveDelete.rejected] : (state, action) => {
+                return {...action.payload}
+            },
+            
+            [leaveViewId.fulfilled] : (state, action) => {
+                return {...action.payload}
+            },
+            [leaveViewId.pending] : (state, action) => {
+                return {...action.payload}
+            },
+            [leaveViewId.rejected] : (state, action) => {
+                return {...action.payload}
+            },
+
+            [leaveEdit.fulfilled] : (state, action) => {
+                return {...action.payload}
+            },
+            [leaveEdit.pending] : (state, action) => {
+                return {...action.payload}
+            },
+            [leaveEdit.rejected] : (state, action) => {
+                return {...action.payload}
+            },
         }
     });
 

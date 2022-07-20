@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import TableModal from "../utils/TableModal";
 import { useSelector, useDispatch } from "react-redux";
 //import {API_URL, token} from '../../api'
-import { leaveList, leaveStatus, leaveTypeAdd, leaveTypeEdit, leaveListbyUser } from "../../reducers/leavesReducer";
+import { leaveTypeList, leaveStatus, leaveTypeAdd, leaveTypeEdit, leaveListbyUser, leaveDelete, leaveViewId } from "../../reducers/leavesReducer";
 import { toast } from "react-toastify";
-
+import Moment from 'react-moment';
 
 const LeavesListType = () => {
 
@@ -36,7 +36,7 @@ const LeavesListType = () => {
         const callback = (data) => {
         setLeavesTypeData ([...data]);
         };
-        leaveList(callback);
+        leaveTypeList(callback);
     },[])
 
   //leave list by users  
@@ -57,7 +57,7 @@ const LeavesListType = () => {
             toast.error(leaveDetails.message);
         }
 
-    },[leaveDetails]);
+    },[]);
 
 
 
@@ -103,6 +103,10 @@ const LeavesListType = () => {
         dispatch(leaveTypeEdit(editLeaveType))
     }
 
+    const handleDeleteLeave = (id) => {
+        console.log(id)
+        dispatch(leaveDelete(id))
+    }
     const [activeTab, setActiveTab] = useState("tab1");
     const handleTab1 = () => {
         // update the state to tab1
@@ -154,8 +158,8 @@ const LeavesListType = () => {
                                         <th>Approved By</th>
                                         <th>Total Leave Days</th>
                                         <th>Leave Status</th>
-                                        <th width="100">Reasons</th>
-                                        <th>Document</th>
+                                        <th style={{width: "100px"}}>Reasons</th>
+                                        <th style={{width: "100px"}}>Document</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -168,8 +172,8 @@ const LeavesListType = () => {
                                                 <td>{userLeave.leave_type_name}</td>
                                                 <td className="text-capitalize">{userLeave.is_paid}</td>
                                                 <td>{userLeave.approver}</td>
-                                                <td>{userLeave.from_date}</td>
-                                                <td>{userLeave.to_date}</td>
+                                                <td><Moment format="DD/MM/YYYY">{userLeave.from_date}</Moment></td>
+                                                <td><Moment format="DD/MM/YYYY">{userLeave.to_date}</Moment> </td>
                                                 <td>{userLeave.allow_number_of_leaves} Leaves</td>
                                                 <td>{userLeave.approved_by}</td>
                                                 <td>{userLeave.total_leaves_days}</td>
@@ -177,7 +181,8 @@ const LeavesListType = () => {
                                                 <td>{userLeave.reasons}</td>
                                                 <td>{userLeave.document}</td>
                                                 <td>
-                                                    <button className="btn btn-outline-secondary btn-sm mx-1">Edit</button>
+                                                    <button className="btn btn-secondary  btn-sm mx-1">Edit</button>
+                                                    <button className="btn btn-secondary  btn-sm mx-1" onClick={()=> handleDeleteLeave(userLeave.leaves_id) }>Delete</button>
                                                 </td>
                                             </tr>
                                         );
