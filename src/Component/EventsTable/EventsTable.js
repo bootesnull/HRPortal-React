@@ -96,8 +96,8 @@ const EventsTable = () => {
     // Events create, list, delete, edit
     const [eventlistData, setEventlistData] = useState([{}]);
     const [eventDate, setEventDate] = useState(new Date());
-    const [eventFromDate, setEventFromDate] = useState("");
-    const [eventToDate, setEventToDate] = useState("")
+    const [eventFromDate, setEventFromDate] = useState();
+    const [eventToDate, setEventToDate] = useState()
 
     const [selectedFile, setSelectedFile] = useState();
     const [addEvent, setAddEvent] = useState({});
@@ -111,10 +111,66 @@ const EventsTable = () => {
         setEditedEvent({...eventRendering.data})
     },[eventRendering])
 
- useEffect(()=>{
-    setEditEventChange({...editedEvent})
- },[editedEvent])
+    useEffect(()=>{
+        if(!editedEvent) return
+        setEditEventChange({...editedEvent})
+        if(editedEvent.date){
+            setEventDate(new Date(editedEvent.date));
+            setEventFromDate(new Date(editedEvent.holiday_from_date));
+            setEventToDate(new Date(editedEvent.holiday_to_date));
+        }
+        
+    },[editedEvent])
 
+    //console.log('dfgdf',editedEvent.date);
+
+
+    const handleEventEdit = (id) => {
+        showModal()
+        setModalTitle( 'Edit Created Event ')
+        dispatch(eventsViewId(id))
+        setFlag(true)
+         
+    }
+
+    const handleEventEditChange = (e) => {
+        console.log(e.target.value);
+        setEditEventChange((prevState) => {
+            return {...prevState, [e.target.name]:e.target.value }
+        })
+    }
+    useEffect(()=>{
+        setEditEventChange({
+            ...editEventChange,
+            date:moment(eventDate).format('DD/MM/YYYY'),
+            holiday_from_date:moment(eventFromDate).format('DD/MM/YYYY'),
+            holiday_to_date:moment(eventToDate).format('DD/MM/YYYY')
+        })
+    },[eventDate,eventFromDate,eventToDate])
+
+    const handleEventEditSave = (e) => {
+        console.log("=========================",editEventChange.event_id)
+        const formData = new FormData();        
+        formData.append('title',editEventChange.title);
+        formData.append('event_type_id',editEventChange.event_type_id);
+        formData.append('description',editEventChange.description);
+        formData.append('is_holiday',editEventChange.is_holiday);
+        formData.append('holiday_from_date',editEventChange.holiday_from_date);
+        formData.append('holiday_to_date',editEventChange.holiday_to_date);
+        formData.append('date',editEventChange.date);
+        formData.append('banner',selectedFile);
+        formData.append('event_id',editEventChange.event_id);
+      //  formData.append('event_type_name',editEventChange.event_type_name);
+
+        e.preventDefault();
+        console.log("---------",editEventChange)
+        dispatch(eventsEdit(formData));
+        setShowBasicModal(false);
+    }
+
+
+
+///////////// add event
     useEffect(()=>{
         setAddEvent({
             ...addEvent,
@@ -168,45 +224,7 @@ const EventsTable = () => {
     };
 
 
-    const handleEventEdit = (id) => {
-        showModal()
-        setModalTitle( 'Edit Created Event ')
-        dispatch(eventsViewId(id))
-        setFlag(true)
-         
-    }
-
-    const fileName = editedEvent?.image_url?.split('/').pop();
-  
-  
-
     
-
-    const handleEventEditChange = (e) => {
-        console.log(e.target.value);
-        setEditEventChange((prevState) => {
-            return {...prevState, [e.target.name]:e.target.value }
-        })
-    }
-
-  
-
-    const handleEventEditSave = (e) => {
-        
-        const formData = new FormData();        
-        formData.append('title',editEventChange.title);
-        formData.append('event_type_id',editEventChange.event_type_id);
-        formData.append('description',editEventChange.description);
-        formData.append('is_holiday',editEventChange.is_holiday);
-        formData.append('holiday_from_date',editEventChange.holiday_from_date);
-        formData.append('holiday_to_date',editEventChange.holiday_to_date);
-        formData.append('date',editEventChange.date);
-        formData.append('banner',selectedFile);
-
-        e.preventDefault();
-        dispatch(eventsEdit(formData));
-        setShowBasicModal(false);
-    }
     
 
 
@@ -292,7 +310,7 @@ const EventsTable = () => {
                                                             <label className="form-label">Event Type</label>
                                                             <select
                                                                 className="form-select" 
-                                                                name={editEventChange.event_type_name} 
+                                                                name="event_type_id" 
                                                                 onChange={handleEventEditChange}
                                                             >
                                                             <option value={editEventChange.event_type_id}>
@@ -318,10 +336,10 @@ const EventsTable = () => {
                                                         <div className="col-lg-6 mb-3">
                                                             <label className="form-label">Date</label>
                                                             <DatePicker 
-                                                            value={moment(editEventChange.date).format('DD/MM/YYYY')}
-                                                            name="events_date"
+                                                            //value={moment(editEventChange.date).format('DD/MM/YYYY')}
+                                                            name="date"
                                                             dateFormat="dd/MM/yyyy"
-                                                            selected={eventDate?eventDate:""} 
+                                                            selected={eventDate} 
                                                             onChange={(date) => {setEventDate(date) } }
                                                             placeholderText="Select Date"
                                                             className="form-control"
@@ -333,7 +351,8 @@ const EventsTable = () => {
                                                             //value={moment(editEventChange.holiday_from_date).format('DD/MM/YYYY')} 
                                                             name="holiday_from_date" 
                                                             dateFormat="dd/MM/yyyy" 
-                                                            selected={eventFromDate} onChange={(date) => setEventFromDate(date)  } 
+                                                            selected={eventFromDate}
+                                                            onChange={(date) => setEventFromDate(date)  } 
                                                             placeholderText="Select Date" 
                                                             className="form-control"
                                                             autoComplete="off"  />
@@ -344,7 +363,7 @@ const EventsTable = () => {
                                                            // value={moment(editEventChange.holiday_to_date).format('DD/MM/YYYY')} 
                                                             name="holiday_to_date" 
                                                             dateFormat="dd/MM/yyyy" 
-                                                            selected={eventToDate} 
+                                                            selected={eventToDate}
                                                             onChange={(date) => setEventToDate(date) }  
                                                             placeholderText="Select Date" 
                                                             className="form-control"
@@ -352,8 +371,8 @@ const EventsTable = () => {
                                                         </div> 
                                                         <div className="col-lg-12 mb-3">
                                                             <label className="form-label">Banner</label>
-                                                            <input type="file"  className="form-control" name="banner" onChange={handleEventEditChange}  autoComplete="off" /> 
-                                                            <p className="btn">{fileName}</p>
+                                                            <input type="file"  className="form-control" name="banner" onChange={handleFileChange}  autoComplete="off" /> 
+                                                            <span className="badge rounded-pill bg-secondary">{editedEvent?.banner?.split('/').pop()}</span>
                                                         </div>
 
                                                         <div className="modal-footer">
