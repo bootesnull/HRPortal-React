@@ -224,13 +224,6 @@ const EventsTable = () => {
     };
 
 
-    
-    
-
-
-
-
-
     return(
         <div>
 
