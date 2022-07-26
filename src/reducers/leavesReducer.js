@@ -189,24 +189,25 @@ export const leaveListbyUser = async (callback) => {
 // leave edit api
 export const leaveApprove = createAsyncThunk(
     'leaves/leave-approve',
-    async(id, value, thunkAPI) => {
+    async({id, leaveStatus}, thunkAPI) => {
         try{
             const response = await fetch(
-            `${API_URL}/api/leaves/leaves/leave-approve?id=${id}&value=${value}`, {
+            `${API_URL}/api/leaves/leaves/leave-approve?id=${id}&value=${leaveStatus}`, {
                     method : "PUT",
                     headers : {
-                        Accept : "application/json",
+                        // Accept : "application/json",
                         "Content-Type" : "application/json",
                         Authorization : `Bearer ${token}`,    
                     },
-                    body : JSON.stringify({
-                        id,
-                        value,
-                    })
+                    // body : JSON.stringify({
+                    //     id,
+                    //     value,
+                    // })
                 }
             );
+           
             let data = response.json();
-            console.log(data);
+           
             return data;
 
         }catch(e){
@@ -293,6 +294,7 @@ export const leaveApprove = createAsyncThunk(
             },
 
             [leaveApprove.fulfilled] : (state, action) => {
+               // console.log(action.payload);
                 return {...action.payload}
             },
             [leaveApprove.pending] : (state, action) => {

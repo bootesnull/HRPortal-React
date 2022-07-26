@@ -20,6 +20,7 @@ const LeavesListType = () => {
     const [addLeaveType, setAddLeaveType] = useState({});
 
     const [editLeaveType, setEditLeaveType] = useState({ });
+    
 
 
     useEffect(()=> {
@@ -98,7 +99,8 @@ const LeavesListType = () => {
 
     const [activeTab, setActiveTab] = useState("tab1");
     const [leavesUserList,setLeavesUserList] =useState([{}])
-
+    const [leaveStatus, setLeaveStatus] = useState();
+   
     //leave list by users  
     useEffect(()=> {
         const callback = (data) => {
@@ -116,12 +118,22 @@ const LeavesListType = () => {
     setActiveTab("tab2");
     };
 
-    const handleStatusChange = (value) => {
-        
+    //leave status change
+    const handleStatusChange = (e,id) => {
+        setLeaveStatus(e.target.value)
+        const newArr = leavesUserList.map(obj => {
+            if (obj.leaves_id === id) {
+              return {...obj, status: e.target.value};
+            }
+            return obj;
+        });
+
+        setLeavesUserList([...newArr])
     }
-    const handleStatusUpdates = (id, value) => {
-        console.log(id, value);
-        dispatch(leaveApprove(id, value))
+
+    //leave status approve api 
+    const handleStatusUpdates = (id) => {
+        dispatch(leaveApprove({id, leaveStatus}))
     }
       
 
@@ -145,10 +157,10 @@ const LeavesListType = () => {
                                 <thead>
                                     <tr>
                                         {/* <th>#ID</th> */}
-                                        <th>Leave ID</th>
-                                        <th>User ID</th>
+                                        <th>Leave&nbsp;ID</th>
+                                        <th>User&nbsp;ID</th>
                                         <th>User Name</th>
-                                        <th>Leave Type Name</th>
+                                        <th>Leave Type</th>
                                         <th>Paid</th>
                                         <th>Approver</th>
                                         <th>Apply Date</th>
@@ -158,7 +170,7 @@ const LeavesListType = () => {
                                         <th width="100">Document</th>
                                         <th>Allowed</th>
                                         {/* <th>Approved By</th> */}
-                                        <th>Total Leave Days</th>
+                                        <th>Total Leave</th>
                                         <th>Leave Status</th>
                                      
                                     </tr>
@@ -178,18 +190,21 @@ const LeavesListType = () => {
                                                 <td>{userLeave.formatedFromDate}</td>
                                                 <td>{userLeave.formatedToDate}</td>
                                                 <td><div className="overflow-text">{userLeave.reasons}</div></td>
-                                                <td><div style={{width: "150px"}}>{userLeave?.document?.split('/').pop() ? userLeave?.document?.split('/').pop() : "No Document"}</div></td>
+                                                <td><div style={{width: "130px"}}>{userLeave?.document?.split('/').pop() ? userLeave?.document?.split('/').pop() : "No Document"}</div></td>
                                                 <td>{userLeave.allow_number_of_leaves} Leaves</td>
                                                 {/* <td>{userLeave.approved_by}</td> */}
-                                                <td>{userLeave.total_leaves_days}</td>
+                                                <td><div style={{width: "100px"}}>{userLeave.total_leaves_days}</div></td>
                                                 <td>
-                                                    <select value={userLeave.status} onClick={()=> handleStatusChange(userLeave.status)}>
-                                                        <option value="1">Pending</option>
-                                                        <option value="2">Approved</option>
-                                                        <option value="3">Revoked</option>
-                                                        <option value="4">Rejected</option>
-                                                    </select>
-                                                    <button onClick={() => handleStatusUpdates(userLeave.leaves_id, userLeave.status)} >Update</button>
+                                                    <div style={{width: "200px"}}>
+                                                        <select className="form-select status-select" name="status" value={userLeave.status}  onChange={(e)=> handleStatusChange(e,userLeave.leaves_id)}>
+                                                            <option value="1">Pending</option>
+                                                            <option value="2">Approved</option>
+                                                            <option value="3">Rejected</option>
+                                                        </select>
+                                                        <button 
+                                                            className="btn btn-primary btn-sm mx-1"
+                                                            onClick={() => handleStatusUpdates(userLeave.leaves_id, userLeave.status)} >Update</button>
+                                                    </div>        
                                                 </td>
                                             </tr>
                                         );

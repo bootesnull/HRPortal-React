@@ -149,7 +149,7 @@ const EventsTable = () => {
     },[eventDate,eventFromDate,eventToDate])
 
     const handleEventEditSave = (e) => {
-        console.log("=========================",editEventChange.event_id)
+       // console.log("=========================",editEventChange.event_id)
         const formData = new FormData();        
         formData.append('title',editEventChange.title);
         formData.append('event_type_id',editEventChange.event_type_id);
@@ -163,7 +163,7 @@ const EventsTable = () => {
       //  formData.append('event_type_name',editEventChange.event_type_name);
 
         e.preventDefault();
-        console.log("---------",editEventChange)
+       // console.log("---------",editEventChange)
         dispatch(eventsEdit(formData));
         setShowBasicModal(false);
     }

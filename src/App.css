@@ -92,11 +92,17 @@
 
 .overflow-text { 
 	display: -webkit-box;
-max-width: 150px;
+max-width: 140px;
 height: 44px;
 -webkit-line-clamp: 2;
 -webkit-box-orient: vertical;
 overflow: hidden;
 text-overflow: ellipsis;
 line-height: 1.32;
+ }
+ .status-select {
+	width: 120px;
+	padding: 0.175rem 1.5rem 0.175rem 0.6rem;
+	background-position: right 0.5rem center;
+	display: inline-block;
  }
