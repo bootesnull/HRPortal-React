@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { eventTypelist,  eventTypeCreate, eventTypeView, eventTypeEdit, eventsCreate, eventsList, eventsDelete, eventsViewId, eventsEdit } from "../../reducers/eventsReducer";
+import { eventTypelist,  eventTypeCreate, eventTypeView, eventTypeEdit, eventTypeStatus, eventsCreate, eventsList, eventsDelete, eventsViewId, eventsEdit } from "../../reducers/eventsReducer";
 import TableModal from "../utils/TableModal";
 import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
@@ -83,6 +83,14 @@ const EventsTable = () => {
         })
     }
 
+
+    // event status update active or inactive
+    const handleUpdateStatus = (e, id) => {
+        let value = e.target.checked ? 1 : 0;
+        dispatch(eventTypeStatus({id, value}))
+    }
+
+
     // Events tabbing
     const [activeTab, setActiveTab] = useState("tab1");
 
@@ -99,7 +107,7 @@ const EventsTable = () => {
     const [eventFromDate, setEventFromDate] = useState();
     const [eventToDate, setEventToDate] = useState()
 
-    const [selectedFile, setSelectedFile] = useState();
+    const [selectedFile, setSelectedFile] = useState("");
     const [addEvent, setAddEvent] = useState({});
 
     const [editedEvent, setEditedEvent] = useState({})
@@ -256,7 +264,7 @@ const EventsTable = () => {
                                         <th>Is Holiday</th>
                                         <th>From Date</th>
                                         <th>To Date</th>
-                                        <th>Status</th>
+                                        {/* <th>Status</th> */}
                                         <th>Banner</th>
                                         <th>Action</th>
                                     </tr>
@@ -269,10 +277,10 @@ const EventsTable = () => {
                                                 <td>{events.events_title}</td>
                                                 <td>{events.event_type_name}</td>
                                                 <td>{events.events_descriptions}</td>
-                                                <td>{events.is_holiday}</td>
+                                                <td>{(events.is_holiday===true) ? "Yes" : "No" }</td>
                                                 <td><Moment format="DD/MM/YYYY">{events.holiday_from_date}</Moment></td>
                                                 <td><Moment format="DD/MM/YYYY">{events.holiday_to_date}</Moment></td>
-                                                <td>{events.status}</td>
+                                                {/* <td>{events.status}</td> */}
                                                 <td><img className="event-banner-img" src={`http://${events.image_url}`} alt="" /> </td>
                                                 
                                                 <td>
@@ -364,7 +372,7 @@ const EventsTable = () => {
                                                         </div> 
                                                         <div className="col-lg-12 mb-3">
                                                             <label className="form-label">Banner</label>
-                                                            <input type="file"  className="form-control" name="banner" onChange={handleFileChange}  autoComplete="off" /> 
+                                                            <input type="file"  className="form-control" name="banner"  onChange={handleFileChange}  autoComplete="off" /> 
                                                             <span className="badge rounded-pill bg-secondary">{editedEvent?.banner?.split('/').pop()}</span>
                                                         </div>
 
@@ -465,15 +473,15 @@ const EventsTable = () => {
                                                 <td>{eventType.name}</td>
                                                 <td><Moment format="DD/MM/YYYY">{eventType.created_at}</Moment></td>
                                                 <td><Moment format="DD/MM/YYYY">{eventType.updated_at}</Moment> </td>
-                                                <td>{eventType.status}
-                                                    {/* <input type="checkbox"
+                                                <td>{/*eventType.status*/}
+                                                    <input type="checkbox"
                                                             className='cm-toggle'
                                                             checked={eventType.status}
                                                             name="status"
                                                             id={eventType.id}
                                                             value={eventType.status}
                                                             onChange={(e)=> handleUpdateStatus(e, eventType.id) }
-                                                    />         */}
+                                                    />        
                                                 </td>
                                                 <td>
                                                     <button className="btn btn-secondary  btn-sm mx-1"

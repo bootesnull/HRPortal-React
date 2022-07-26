@@ -121,6 +121,39 @@ export const eventTypeEdit = createAsyncThunk(
 );  
 
 
+// Event Type Edit API
+export const eventTypeStatus = createAsyncThunk(
+    'events/event-type-edit',
+    async ( {id, value}, thunkAPI) => {
+        try{
+            const response = await fetch(
+                `${API_URL}/api/events/event_type/active-deactive?id=${id}&value=${value}`,
+                {
+                    method: "PUT",
+                    headers : {
+                        Accept : "application/json",
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                    // body: JSON.stringify({
+                    //     id:id,
+                    //     name: name,
+                    // })
+                }
+            );
+            let data = response.json();
+           // console.log(data);
+            return data;
+        }catch(e) {
+            console.log("error", e.response.data)
+            thunkAPI.rejectWithValue(e.response.data)
+        }
+    }
+); 
+
+
+
+
 
 // Event List API
 export const eventsList = async(callback) => {
