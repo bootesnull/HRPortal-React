@@ -173,7 +173,7 @@ const AllowPermissionTable = () => {
                                             checked={allowPermit.status}
                                             name="status"
                                             id={allowPermit.allow_id}
-                                            value={allowPermit.status}
+                                            value={allowPermit.status || ""}
                                             onChange={(e)=> handleUpdateStatus(e, allowPermit.allow_id) }
                                     />        
                                 </td>

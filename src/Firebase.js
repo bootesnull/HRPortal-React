@@ -16,17 +16,38 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app)
 
-const provider = new GoogleAuthProvider()
+export default app;
+
+
+// 27-7-2022
+// const firebaseConfig = {
+//     apiKey: "AIzaSyDpFzTq4M7B7PvxhRvbwuW7CSj1d27JhtI",
+//     authDomain: "hrportal-react-52e9f.firebaseapp.com",
+//     projectId: "hrportal-react-52e9f",
+//     storageBucket: "hrportal-react-52e9f.appspot.com",
+//     messagingSenderId: "341443062366",
+//     appId: "1:341443062366:web:394e0a1e400d825c0da2cf",
+//     measurementId: "G-8HMJJL260Q"
+//   };
+  
+//   // Initialize Firebase
+//   export const app = initializeApp(firebaseConfig);
+//   export const auth = getAuth(app)
+  
+
+export const provider = new GoogleAuthProvider()
+
 
 export const signWithGoogle = () => {
     signInWithPopup(auth, provider)
         .then((result) => {
             const resultData = result.user
-            console.log(resultData)
-
+            localStorage.setItem("token", resultData.accessToken)
         })
         .catch((error) => {
             console.log(error);
         })
 }
+
+
 

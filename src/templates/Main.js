@@ -14,6 +14,8 @@ import Attendence from '../pages/Attendence/Attendence';
 
 import Error from '../pages/Error/Error';
 import EditUserDetail from '../Component/UsersTable/EditUserDetail';
+import Login from '../pages/Login/Login';
+import ProtectedRoute from '../Component/ProtectedRoute/ProtectedRoute';
 
 
 const Main = () => {
@@ -21,7 +23,8 @@ const Main = () => {
     <div className='content'>
 
         <Routes>
-          <Route path='/' element={<Home />} />
+          {/* <Route path='/' element={<Login />} />
+          <Route path='/home' element={<Home />} />
           <Route path='/attendence' element={<Attendence />} />
           <Route path='/roles' element={<Roles />} />
           <Route path='/permission' element={<Permission />} />
@@ -32,7 +35,7 @@ const Main = () => {
           <Route path='/announcement' element={<Announcement />} />
           <Route path='/events' element={<Events />} />
           <Route path='/reports' element={<Reports />} />
-          <Route path='*' element={<Error />} />
+          <Route path='*' element={<Error />} /> */}
         </Routes>
 
     </div>

@@ -255,7 +255,7 @@ const LeavesListType = () => {
                                                         checked={leave.status}
                                                         name="status"
                                                         id={leave.id}
-                                                        value={leave.status}
+                                                        value={leave.status  || ""}
                                                         onChange={(e) => handleUpdateStatus(e, leave.id)}
                                                     />
                                                 </td>

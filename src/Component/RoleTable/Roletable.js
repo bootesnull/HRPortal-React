@@ -229,7 +229,7 @@ const RoleTable = () => {
                                         checked={rolesData.status}
                                         name="status"
                                         id={rolesData.id}
-                                        value={rolesData.status}
+                                        value={rolesData.status  || ""}
                                         onChange={(e) => handleUpdateStatus(e, rolesData.id)}
                                     />
                                     </td>
