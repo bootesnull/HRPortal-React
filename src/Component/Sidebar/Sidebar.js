@@ -1,17 +1,26 @@
 import React from 'react'
 import logo from '../../Images/logo.svg'
-import { NavLink } from 'react-router-dom'
+import {   NavLink  } from 'react-router-dom'
+import { signOut } from 'firebase/auth'
+import {auth } from "../../firebase"
 
 import './sidebar.css'
 
 
 const Sidebar = () => {
+
+    const logOut = () => {
+   
+       signOut(auth)
+    
+    }
+
     return (
 
         <nav className="sidebar">
             <ul>
                 <li className='logoLi'>
-                    <NavLink to='/' className='logoLink'><img className='logo' src={logo} alt='Company Logo' /></NavLink>
+                    <NavLink to='/home' className='logoLink'><img className='logo' src={logo} alt='Company Logo' /></NavLink>
                 </li>
                 <li>
                     <NavLink to='/attendence' > Attendence</NavLink>
@@ -41,7 +50,7 @@ const Sidebar = () => {
                     <NavLink to='/reports'>Reports</NavLink>
                 </li>
                 <li>
-                    <NavLink to='/logout' className="nav-item-bottom" id="logoutbtn" ><i className="fa fa-sign-out"> </i>Logout</NavLink>
+                    <div className="nav-item-bottom" onClick={logOut} ><i className="fa fa-sign-out"> </i>Logout</div>
                 </li>
             </ul>
         </nav>

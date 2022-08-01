@@ -7,6 +7,7 @@ const initialState = {
         message: "",
         statusCode: '',
       },
+      firebaseUser:{}
 };
 
 
@@ -38,13 +39,12 @@ const userReducer = createSlice({
     name: "users",
     initialState,
     reducers: {
-        // fetchUsersList(state = initialState, action) {
-        //     console.log(action.payload);
-        //     return {
-        //         ...state,
-        //         userList: [...action.payload],
-        //     };
-        // },
+        userAuth(state = initialState, action) {
+            //console.log(action.payload);
+          return{
+            firebaseUser:{...action.payload}
+          }
+        },
     },
     extraReducers: {
         [usersList.fulfilled]: (state, action) => {
@@ -60,5 +60,5 @@ const userReducer = createSlice({
 });
 
 
-export const { fetchUsersList } = userReducer.actions;
+export const { userAuth } = userReducer.actions;
 export default userReducer.reducer;

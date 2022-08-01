@@ -1,12 +1,12 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-
-const ProtectedRoute = ({ children }) => {
-    let token = localStorage.getItem("token");
-    if (!token) {
-        return  <Navigate to="/" /> 
-    }
-    return children
+import { useSelector } from "react-redux";
+import Layout from "../../templates/Layout";
+const ProtectedRoute = () => {
+    const token = useSelector((state)=>state.Users.firebaseUser.accessToken)
+    // console.log(token);
+    // let token = localStorage.getItem("token");
+        return  token ? <Layout />  : <Navigate to="/" />
 }
 
 export default ProtectedRoute;

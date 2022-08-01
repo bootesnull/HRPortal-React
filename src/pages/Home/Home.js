@@ -1,23 +1,23 @@
 import React from 'react'
+import DashboardCol from '../../Component/DashboardCol/DashboardCol';
 
 import './home.css'
-// import Content from '../../Component/Content/Content'
-import Sidebar from '../../Component/Sidebar/Sidebar';
-import Navbar from '../../Component/Navbar/Navbar';
-
-// import Main from '../../templates/Main';
-
 
 const Home = () => {
     return (
+
         <div>
-           
-           <Sidebar/>
-            <div className='main-content'>
-                <Navbar/>
-                {/* <Main /> */}
+            <div className='container-fluid'>
+                <div className="card">
+                    <div className="card-body" >
+                        <DashboardCol />
+
+                        
+                    </div>
+                </div>
             </div>
         </div>
+        
     );
 }
 

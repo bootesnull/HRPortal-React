@@ -45,12 +45,18 @@ nav.sidebar.sidebar ul {
 nav.sidebar ul li {
   line-height: 52px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 400;
+  display: block;
+  width: 100%;
 }
 
 nav.sidebar ul li a.logoLink { padding-left: 10px;}
 nav.sidebar ul li a {
   position: relative;
-  color: var(--secondary);
+  color:  #fff;
   text-decoration: none;
   font-size: 18px;
   padding-left: 24px;
@@ -89,8 +95,11 @@ nav.sidebar ul ul li a {
 }
 
 .nav-item-bottom {
-  position: absolute;
+  position: relative;
   bottom: 0;
+  padding-left: 24px;
+  cursor: pointer;
+  color: #fff;
 }
 
 /* LOGO  */
