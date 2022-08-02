@@ -8,13 +8,12 @@ const Home = () => {
 
         <div>
             <div className='container-fluid'>
-                <div className="card">
+                <DashboardCol />
+                {/* <div className="card">
                     <div className="card-body" >
                         <DashboardCol />
-
-                        
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
         

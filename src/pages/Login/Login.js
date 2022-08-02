@@ -5,16 +5,23 @@ import { auth, provider } from "../../firebase"
 import { signInWithPopup } from 'firebase/auth'
 import { userAuth } from "../../reducers/userReducer";
 import { useDispatch, useSelector } from "react-redux";
+import './login.css';
+
 const Login = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
-    const token = useSelector((state) => state.Users.firebaseUser.accessToken)
+    const token = useSelector((state) => state?.Users?.firebaseUser?.accessToken)
 
     // console.log(token);
     useEffect(() => {
-        if (!token) return;
-        navigate("/home")
+        if (token) {
+            navigate("/home")
+        }
+        else {
+            navigate("/")
+        }
+        
     }, [token])
 
     
@@ -34,14 +41,15 @@ const Login = () => {
 
     return (
         <div className="container">
-            <div className="row justify-content-center">
+            <div className="row justify-content-center align-items-center height-100-vh">
                 <div className="col-lg-4">
                     <div className="card">
-                        <div className="p-4 card-body">
-                            <div className="p-4">
+                        <div className="p-3 card-body text-center">
+                            <div className="p-1">
                                 <h2 className="mb-3">HR Portal Login</h2>
                                 {/* {error && <Alert variant="danger">{error}</Alert>} */}
-                                <div>
+                                <hr />
+                                <div className="g-btn">
                                     <GoogleLoginBtn onClick={signWithGoogle} />
                                 </div>
                             </div>

@@ -1,18 +1,22 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import logo from '../../Images/logo.svg'
-import {   NavLink  } from 'react-router-dom'
-import { signOut } from 'firebase/auth'
-import {auth } from "../../firebase"
+import { NavLink } from 'react-router-dom'
+import { auth } from "../../firebase"
+import { userLogout } from '../../reducers/userReducer'
 
 import './sidebar.css'
 
 
 const Sidebar = () => {
 
+    const dispatch = useDispatch();
+
     const logOut = () => {
-   
-       signOut(auth)
-    
+
+        dispatch(userLogout())
+        auth.signOut()
+
     }
 
     return (

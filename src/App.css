@@ -106,3 +106,5 @@ line-height: 1.32;
 	background-position: right 0.5rem center;
 	display: inline-block;
  }
+
+ .height-100-vh { height: 100vh;}

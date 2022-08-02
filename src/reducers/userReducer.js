@@ -45,6 +45,10 @@ const userReducer = createSlice({
             firebaseUser:{...action.payload}
           }
         },
+        userLogout(state = initialState, action) {
+          state.firebaseUser = null;
+          //console.log("akhsdfljs")
+        },
     },
     extraReducers: {
         [usersList.fulfilled]: (state, action) => {
@@ -60,5 +64,5 @@ const userReducer = createSlice({
 });
 
 
-export const { userAuth } = userReducer.actions;
+export const { userAuth, userLogout } = userReducer.actions;
 export default userReducer.reducer;
