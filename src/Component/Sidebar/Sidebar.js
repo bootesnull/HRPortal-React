@@ -1,17 +1,30 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import logo from '../../Images/logo.svg'
 import { NavLink } from 'react-router-dom'
+import { auth } from "../../firebase"
+import { userLogout } from '../../reducers/userReducer'
 
 import './sidebar.css'
 
 
 const Sidebar = () => {
+
+    const dispatch = useDispatch();
+
+    const logOut = () => {
+
+        dispatch(userLogout())
+        auth.signOut()
+
+    }
+
     return (
 
         <nav className="sidebar">
             <ul>
                 <li className='logoLi'>
-                    <NavLink to='/' className='logoLink'><img className='logo' src={logo} alt='Company Logo' /></NavLink>
+                    <NavLink to='/home' className='logoLink'><img className='logo' src={logo} alt='Company Logo' /></NavLink>
                 </li>
                 <li>
                     <NavLink to='/attendence' > Attendence</NavLink>
@@ -41,7 +54,7 @@ const Sidebar = () => {
                     <NavLink to='/reports'>Reports</NavLink>
                 </li>
                 <li>
-                    <NavLink to='/logout' className="nav-item-bottom" id="logoutbtn" ><i className="fa fa-sign-out"> </i>Logout</NavLink>
+                    <div className="nav-item-bottom" onClick={logOut} ><i className="fa fa-sign-out"> </i>Logout</div>
                 </li>
             </ul>
         </nav>

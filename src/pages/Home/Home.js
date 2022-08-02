@@ -1,22 +1,22 @@
 import React from 'react'
+import DashboardCol from '../../Component/DashboardCol/DashboardCol';
 
 import './home.css'
-import Content from '../../Component/Content/Content'
-
 
 const Home = () => {
     return (
+
         <div>
             <div className='container-fluid'>
-                <div className="card">
+                <DashboardCol />
+                {/* <div className="card">
                     <div className="card-body" >
-                        <h5 className="card-title"><b> Home Page</b></h5>
-
-                        <Content />
+                        <DashboardCol />
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
+        
     );
 }
 

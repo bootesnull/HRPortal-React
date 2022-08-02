@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { eventTypelist,  eventTypeCreate, eventTypeView, eventTypeEdit, eventsCreate, eventsList, eventsDelete, eventsViewId, eventsEdit } from "../../reducers/eventsReducer";
+import { eventTypelist,  eventTypeCreate, eventTypeView, eventTypeEdit, eventTypeStatus, eventsCreate, eventsList, eventsDelete, eventsViewId, eventsEdit } from "../../reducers/eventsReducer";
 import TableModal from "../utils/TableModal";
 import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
@@ -53,7 +53,6 @@ const EventsTable = () => {
         setCreateEventType((state)=> {
            return {...state, [e.target.name]: e.target.value }
         })
-       // console.log(e.target.name, e.target.value)
     }
 
     // Create event handle
@@ -64,7 +63,6 @@ const EventsTable = () => {
     }    
     
     const handleEventTypeEdit = (id) => {
-        //console.log(id)
         showModal();
         setModalTitle('Edit Event Type');
         setFlag(true)
@@ -83,6 +81,13 @@ const EventsTable = () => {
         })
     }
 
+    // event status update active or inactive
+    const handleUpdateStatus = (e, id) => {
+        let value = e.target.checked ? 1 : 0;
+        dispatch(eventTypeStatus({id, value}))
+    }
+
+
     // Events tabbing
     const [activeTab, setActiveTab] = useState("tab1");
 
@@ -98,10 +103,8 @@ const EventsTable = () => {
     const [eventDate, setEventDate] = useState(new Date());
     const [eventFromDate, setEventFromDate] = useState();
     const [eventToDate, setEventToDate] = useState()
-
-    const [selectedFile, setSelectedFile] = useState();
+    const [selectedFile, setSelectedFile] = useState("");
     const [addEvent, setAddEvent] = useState({});
-
     const [editedEvent, setEditedEvent] = useState({})
     const [editEventChange,setEditEventChange] = useState()
  
@@ -119,18 +122,14 @@ const EventsTable = () => {
             setEventFromDate(new Date(editedEvent.holiday_from_date));
             setEventToDate(new Date(editedEvent.holiday_to_date));
         }
-        
     },[editedEvent])
-
-    //console.log('dfgdf',editedEvent.date);
-
 
     const handleEventEdit = (id) => {
         showModal()
         setModalTitle( 'Edit Created Event ')
         dispatch(eventsViewId(id))
         setFlag(true)
-         
+        setSelectedFile("");
     }
 
     const handleEventEditChange = (e) => {
@@ -149,7 +148,6 @@ const EventsTable = () => {
     },[eventDate,eventFromDate,eventToDate])
 
     const handleEventEditSave = (e) => {
-        console.log("=========================",editEventChange.event_id)
         const formData = new FormData();        
         formData.append('title',editEventChange.title);
         formData.append('event_type_id',editEventChange.event_type_id);
@@ -158,17 +156,14 @@ const EventsTable = () => {
         formData.append('holiday_from_date',editEventChange.holiday_from_date);
         formData.append('holiday_to_date',editEventChange.holiday_to_date);
         formData.append('date',editEventChange.date);
-        formData.append('banner',selectedFile);
+        if(selectedFile){
+            formData.append('banner',selectedFile);
+        }
         formData.append('event_id',editEventChange.event_id);
-      //  formData.append('event_type_name',editEventChange.event_type_name);
-
         e.preventDefault();
-        console.log("---------",editEventChange)
         dispatch(eventsEdit(formData));
         setShowBasicModal(false);
     }
-
-
 
 ///////////// add event
     useEffect(()=>{
@@ -192,7 +187,6 @@ const EventsTable = () => {
 
     const handleEventSave = (e) => {
         e.preventDefault();
-       // console.log(selectedFile);
         const formData = new FormData();        
         formData.append('title',addEvent.title);
         formData.append('event_type_id',addEvent.event_type_id);
@@ -202,8 +196,6 @@ const EventsTable = () => {
         formData.append('holiday_to_date',addEvent.holiday_to_date);
         formData.append('date',addEvent.date);
         formData.append('banner',selectedFile);
-        //console.log('askjhdflksajflsadkf', selectedFile)
-        //console.log('formdata', formData);        
         dispatch(eventsCreate(formData))
         setShowBasicModal(false);
         e.target.reset();
@@ -222,13 +214,6 @@ const EventsTable = () => {
     const handleDelete = (id) => {
         dispatch(eventsDelete(id))
     };
-
-
-    
-    
-
-
-
 
 
     return(
@@ -263,7 +248,7 @@ const EventsTable = () => {
                                         <th>Is Holiday</th>
                                         <th>From Date</th>
                                         <th>To Date</th>
-                                        <th>Status</th>
+                                        {/* <th>Status</th> */}
                                         <th>Banner</th>
                                         <th>Action</th>
                                     </tr>
@@ -276,12 +261,11 @@ const EventsTable = () => {
                                                 <td>{events.events_title}</td>
                                                 <td>{events.event_type_name}</td>
                                                 <td>{events.events_descriptions}</td>
-                                                <td>{events.is_holiday}</td>
+                                                <td>{(events.is_holiday===true) ? "Yes" : "No" }</td>
                                                 <td><Moment format="DD/MM/YYYY">{events.holiday_from_date}</Moment></td>
                                                 <td><Moment format="DD/MM/YYYY">{events.holiday_to_date}</Moment></td>
-                                                <td>{events.status}</td>
+                                                {/* <td>{events.status}</td> */}
                                                 <td><img className="event-banner-img" src={`http://${events.image_url}`} alt="" /> </td>
-                                                
                                                 <td>
                                                     <button className="btn btn-secondary  btn-sm mx-1" onClick={() => handleEventEdit(events.events_id)}  >Edit</button>
                                                     <button className="btn btn-secondary  btn-sm mx-1" onClick={()=> handleDelete(events.events_id)}>Delete</button>
@@ -336,7 +320,6 @@ const EventsTable = () => {
                                                         <div className="col-lg-6 mb-3">
                                                             <label className="form-label">Date</label>
                                                             <DatePicker 
-                                                            //value={moment(editEventChange.date).format('DD/MM/YYYY')}
                                                             name="date"
                                                             dateFormat="dd/MM/yyyy"
                                                             selected={eventDate} 
@@ -348,7 +331,6 @@ const EventsTable = () => {
                                                         <div className="col-lg-6 mb-3">
                                                             <label className="form-label">Holiday From Date</label>
                                                             <DatePicker 
-                                                            //value={moment(editEventChange.holiday_from_date).format('DD/MM/YYYY')} 
                                                             name="holiday_from_date" 
                                                             dateFormat="dd/MM/yyyy" 
                                                             selected={eventFromDate}
@@ -360,7 +342,6 @@ const EventsTable = () => {
                                                         <div className="col-lg-6 mb-3">
                                                             <label className="form-label">Holiday To Date</label>
                                                             <DatePicker 
-                                                           // value={moment(editEventChange.holiday_to_date).format('DD/MM/YYYY')} 
                                                             name="holiday_to_date" 
                                                             dateFormat="dd/MM/yyyy" 
                                                             selected={eventToDate}
@@ -371,13 +352,13 @@ const EventsTable = () => {
                                                         </div> 
                                                         <div className="col-lg-12 mb-3">
                                                             <label className="form-label">Banner</label>
-                                                            <input type="file"  className="form-control" name="banner" onChange={handleFileChange}  autoComplete="off" /> 
+                                                            <input type="file"  className="form-control" name="banner"  onChange={handleFileChange}  autoComplete="off" /> 
                                                             <span className="badge rounded-pill bg-secondary">{editedEvent?.banner?.split('/').pop()}</span>
                                                         </div>
 
                                                         <div className="modal-footer">
                                                             <button type="button" className="btn btn-secondary" onClick={(e) => setShowBasicModal(false)}  >Cancel</button>
-                                                            <button type="submit" className="btn btn-primary"  >Save</button>
+                                                            <button type="submit" className="btn btn-primary"  >Update</button>
                                                         </div>
                                                     </form>
                                             </>) : (
@@ -472,15 +453,15 @@ const EventsTable = () => {
                                                 <td>{eventType.name}</td>
                                                 <td><Moment format="DD/MM/YYYY">{eventType.created_at}</Moment></td>
                                                 <td><Moment format="DD/MM/YYYY">{eventType.updated_at}</Moment> </td>
-                                                <td>{eventType.status}
-                                                    {/* <input type="checkbox"
+                                                <td>{/*eventType.status*/}
+                                                    <input type="checkbox"
                                                             className='cm-toggle'
                                                             checked={eventType.status}
                                                             name="status"
                                                             id={eventType.id}
-                                                            value={eventType.status}
+                                                            value={eventType.status || ""}
                                                             onChange={(e)=> handleUpdateStatus(e, eventType.id) }
-                                                    />         */}
+                                                    />        
                                                 </td>
                                                 <td>
                                                     <button className="btn btn-secondary  btn-sm mx-1"

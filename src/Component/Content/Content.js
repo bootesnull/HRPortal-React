@@ -1,57 +1,27 @@
 import React from 'react'
+import { Routes, Route } from 'react-router-dom'
+
+import routes from '../../routes'
 
 
 const Content = () => {
     return (
-        <div className="row">
-            <div className='col col-2'>
-                <div className="card">
-                    <div className="card-body" >
-                        <h5 className="card-title"><b> Component</b></h5>
-                    </div>
-                </div>
-            </div>
-            
-            <div className='col col-2'>
-                <div className="card">
-                    <div className="card-body" >
-                        <h5 className="card-title"><b> Component</b></h5>
-                    </div>
-                </div>
-            </div>
-
-            <div className='col col-2'>
-                <div className="card">
-                    <div className="card-body" >
-                        <h5 className="card-title"><b> Component</b></h5>
-                    </div>
-                </div>
-            </div>
-
-            <div className='col col-2'>
-                <div className="card">
-                    <div className="card-body" >
-                        <h5 className="card-title"><b> Component</b></h5>
-                    </div>
-                </div>
-            </div>
-
-            <div className='col col-2'>
-                <div className="card">
-                    <div className="card-body" >
-                        <h5 className="card-title"><b> Component</b></h5>
-                    </div>
-                </div>
-            </div>
-
-            <div className='col col-2'>
-                <div className="card">
-                    <div className="card-body" >
-                        <h5 className="card-title"><b> Component</b></h5>
-                    </div>
-                </div>
-            </div>
-
+        <div>
+            <Routes>
+                {routes.map((route, index)=> {
+                    return (
+                        route.element && (
+                            <Route
+                                key={index}
+                                path={route.path}
+                                exact={route.exact}
+                                name={route.name}
+                                element={<route.element />}
+                            />
+                        )
+                    )
+                })}
+            </Routes>
         </div>
     )
 }

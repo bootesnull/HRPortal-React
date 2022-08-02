@@ -1,24 +1,34 @@
 import React from "react";
-
+import {Routes, Route} from 'react-router-dom'
 import './App.css';
-import Navbar from "./Component/Navbar/Navbar";
-import Sidebar from "./Component/Sidebar/Sidebar";
-// import GoogleLoginBtn from './Component/GoogleLoginBtn/GoogleLoginBtn'
+import Login from "./pages/Login/Login";
+// import Home from './pages/Home/Home';
+// import Roles from './pages/Roles/Roles';
+// import Permission from './pages/Permission/Permission';
+// import AllowPermission from './pages/AllowPermission/AllowPermission';
+// import UsersList from './pages/UsersList/UsersList';
+// import Leaves from './pages/Leaves/Leaves';
+// import Announcement from './pages/Announcement/Announcement';
+// import Events from './pages/Events/Events';
+// import Reports from './pages/Reports/Reports';
+// import Attendence from './pages/Attendence/Attendence';
 
-// template
-import Main from "./templates/Main";
+// import EditUserDetail from './Component/UsersTable/EditUserDetail';
+import ProtectedRoute from "./Component/ProtectedRoute/ProtectedRoute";
+
 
 const App = () => {
-    return(
-        <div>
-          {/* <GoogleLoginBtn /> */}
-            <Sidebar/>
-            <div className='main-content'>
-                <Navbar/>
-                <Main />
-            </div>
-        </div>
-    );
-};
+  return (
+    <div className='content'>
+
+        <Routes>
+          <Route path='/' name='Login' element={<Login />} />
+          <Route exact  path='*' name='Home' element={<ProtectedRoute />} />
+        </Routes>
+
+    </div>
+  );
+}
+
 
 export default App; 

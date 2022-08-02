@@ -153,7 +153,7 @@ const Permission = () => {
                                         checked={permit.status}
                                         name="status"
                                         id={permit.id}
-                                        value={permit.status}
+                                        value={permit.status || ""}
                                         onChange={(e) => handleUpdateStatus(e, permit.id)}
                                     />
                                 </td>
