@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { API_URL, token } from "../api";
 
 const initialState = {
@@ -6,8 +6,8 @@ const initialState = {
     user: {
         message: "",
         statusCode: '',
-      },
-      firebaseUser:{}
+    },
+    firebaseUser: {}
 };
 
 
@@ -32,6 +32,34 @@ export const usersList = async (callback) => {
     }
 }
 
+// user login 
+export const userLogin = createAsyncThunk(
+    "roles/roleAdd",
+    async ({token, name, email}, thunkAPI) => {
+     
+      try {
+        const response = await fetch(`${API_URL}/api/sign-up`, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name:name,
+            email:email, 
+            firebase_token:token,
+          }),
+        });
+  
+        let data = await response.json();
+        console.log(data);
+        return data;
+      } catch (e) {
+        console.log("Error", e.response.data);
+        thunkAPI.rejectWithValue(e.response.data)
+      }
+    }
+  );
 
 
 
@@ -39,15 +67,17 @@ const userReducer = createSlice({
     name: "users",
     initialState,
     reducers: {
-        userAuth(state = initialState, action) {
-            //console.log(action.payload);
-          return{
-            firebaseUser:{...action.payload}
-          }
-        },
+        // userAuth(state = initialState, action) {
+        //     // console.log(action.payload.accessToken);
+        //     localStorage.setItem("token", action.payload.accessToken)
+        //     return {
+        //         firebaseUser: { ...action.payload }
+        //     }
+        // },
         userLogout(state = initialState, action) {
-          state.firebaseUser = null;
-          //console.log("akhsdfljs")
+            localStorage.removeItem("token")
+            state.firebaseUser = null;
+            //console.log("akhsdfljs")
         },
     },
     extraReducers: {
@@ -60,9 +90,21 @@ const userReducer = createSlice({
         [usersList.rejected]: (state, action) => {
             return { ...action.payload }
         },
+
+        [userLogin.fulfilled]: (state, action) => {
+            return { ...action.payload }
+        },
+        [userLogin.pending]: (state, action) => {
+            return { ...action.payload }
+        },
+        [userLogin.rejected]: (state, action) => {
+            return { ...action.payload }
+        },
+
+        
     }
 });
 
 
-export const { userAuth, userLogout } = userReducer.actions;
+export const {  userLogout } = userReducer.actions;
 export default userReducer.reducer;

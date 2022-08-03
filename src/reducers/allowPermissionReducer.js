@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { API_URL, token } from "../api";
+import { API_URL,token } from "../api";
+
+
 
 const initialState = {
     allowPermissionList : [],
@@ -7,6 +9,7 @@ const initialState = {
         messsage: "",
         statusCode:"",
     },
+    
 };
 
 //list allow permission api
