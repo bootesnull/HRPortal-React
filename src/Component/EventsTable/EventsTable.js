@@ -456,10 +456,10 @@ const EventsTable = () => {
                                                 <td>{/*eventType.status*/}
                                                     <input type="checkbox"
                                                             className='cm-toggle'
-                                                            checked={eventType.status}
+                                                            checked={eventType.status == 1 ? true : false}
                                                             name="status"
                                                             id={eventType.id}
-                                                            value={eventType.status || ""}
+                                                            value={eventType.status == 1 ? true : false}
                                                             onChange={(e)=> handleUpdateStatus(e, eventType.id) }
                                                     />        
                                                 </td>

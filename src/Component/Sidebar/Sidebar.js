@@ -1,8 +1,8 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+// import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import { auth } from "../../firebase"
-import { userLogout } from '../../reducers/userReducer'
+// import { auth } from "../../firebase"
+// import { userLogout } from '../../reducers/userReducer'
 import { useNavigate } from "react-router-dom";
 import './sidebar.css'
 
@@ -11,16 +11,14 @@ const Sidebar = () => {
 
     const navigate = useNavigate();
 
-    const dispatch = useDispatch();
-
-    const logOut = () => {
-
-        dispatch(userLogout()).then(()=>{
-            navigate("/")
-        })
-        auth.signOut()
-
-    }
+    //const dispatch = useDispatch();
+    // const logOut = () => {
+    //     dispatch(userLogout()).then(()=>{
+    //         navigate("/")
+    //     })
+    //     auth.signOut()
+    // }
+    //localStorage.getItem("token")
 
     return (
 
@@ -57,7 +55,12 @@ const Sidebar = () => {
                     <NavLink to='/reports'>Reports</NavLink>
                 </li>
                 <li>
-                    <div className="nav-item-bottom" onClick={logOut} ><i className="fa fa-sign-out"> </i>Logout</div>
+                    <div className="nav-item-bottom" 
+                        onClick={() => {
+                            localStorage.removeItem("token")
+                            navigate("/")
+                        }} 
+                    ><i className="fa fa-sign-out"> </i>Logout</div>
                 </li>
             </ul>
         </nav>

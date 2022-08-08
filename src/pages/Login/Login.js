@@ -1,59 +1,47 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import GoogleLoginBtn from 'react-google-button'
-import { auth, provider } from "../../firebase"
-import { signInWithPopup } from 'firebase/auth'
-import { userLogin } from "../../reducers/userReducer";
+import { toast  } from 'react-toastify';
 import { useDispatch, useSelector } from "react-redux";
-import { adminLogin } from "../../reducers/loginReducer";
+import { loginAdmin } from "../../reducers/loginReducer";
 import './login.css';
 
 const Login = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
-    const [loginuser, setLoginuser] = useState({
+    const loginDetails = useSelector((state) => state.authLogin)
+    const [adminLogin, setAdminLogin] = useState({
         userName:"",
         password:"",
     });
-    
-   // const token = useSelector((state) => state?.Users?.firebaseUser?.accessToken)
-    
-    const signWithGoogle = () => {
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                const resultData = result.user;
-                //console.log(resultData.accessToken,resultData.displayName,resultData.email);
-                let data = {
-                    name:resultData.displayName,
-                    token:resultData.accessToken,
-                    email:resultData.email
-                }
-                //console.log(data);
-            dispatch(userLogin(data))
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
 
     const handleLogin = (e) => {
-        // const callback = () =>{
-        //     alert("jfdhg")
-        // }
         e.preventDefault();
-        dispatch(adminLogin(loginuser)).then(()=>{
-            navigate("/home")
+        dispatch(loginAdmin(adminLogin)).then(()=>{
+            //navigate("/home") 
+            if(localStorage.getItem("token")) {
+               navigate("/home") 
+            }
         }).catch(()=>{
             navigate("/")
         })
-        // navigate("/home")
     }
+
+
     const handleChange = (e) => {
-        setLoginuser((preState)=> {
+        setAdminLogin((preState)=> {
            // console.log(e.target.name , e.target.value);
             return {...preState, [e.target.name] : e.target.value }
         })
     }
+
+    useEffect(()=>{
+        // if (loginDetails.statusCode===200) {
+        //     toast.success(loginDetails.message);
+        // }
+        if (loginDetails.statusCode===401) {
+            toast.error(loginDetails.message);
+        }
+    },[loginDetails])
 
     return (
         <>
@@ -69,26 +57,24 @@ const Login = () => {
                     </div>
                     <div className="col-lg-4 form-col">
                         <div className="card">
-                            <div className="p-4 card-body text-center">
+                            <div className="p-4 card-body ">
                                 <div className="p-2">
-                                    <h2 className="mb-4">HR Portal Login</h2>
+                                    <h2 className="mb-4 text-center">HR Portal Login</h2>
+                                    <hr style={{opacity: "0.1"}}/>
                                     
                                     <form className="row" onSubmit={handleLogin}>
-                                        {/* {error && <Alert variant="danger">{error}</Alert>} */}
                                         <div className="col-lg-12 mb-3">
+                                            <label className="form-label">Email<span className="text-danger">*</span></label>
                                             <input type="text" name="email" className="form-control" placeholder="Enter email" onChange={handleChange} />
                                         </div>
                                         <div className="col-lg-12 mb-3">
+                                            <label className="form-label">Password<span className="text-danger">*</span></label>
                                             <input type="password" name="password" className="form-control" placeholder="Enter password" onChange={handleChange} />
                                         </div>
                                         <div className="col-lg-12 mb-3">
                                             <button type="submit" className="btn btn-primary col-lg-12">Login</button>
                                         </div>
                                     </form>
-                                    <hr />
-                                    <div className="g-btn">
-                                        <GoogleLoginBtn onClick={signWithGoogle} />
-                                    </div>
                                 </div>
                             </div>
                         </div>

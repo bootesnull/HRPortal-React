@@ -3,43 +3,48 @@ import { API_URL } from "../api";
 
 
 const initialState = {
-    login: [],
+    login: {},
     loginUser : {
         message: "",
         statusCode : "",
+        //token:"",
     },
+    
 
 }
 
 // admin login 
-export const adminLogin = createAsyncThunk(
+export const loginAdmin = createAsyncThunk(
     "login/admin-login",
     async ({email, password}, thunkAPI) => {
-    //  console.log(callback);
-      try {
-        const response = await fetch(`${API_URL}/api/login`, {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email:email, 
-            password:password,
-          }),
-        });
-  
-        let data = await response.json();
-        console.log(data);
-        localStorage.setItem("token", data.token)
-        // callback()
-        return data;
-      } catch (e) {
-        console.log("Error", e.response.data);
-        thunkAPI.rejectWithValue(e.response.data)
-      }
+        try{
+            const response = await fetch(
+                `${API_URL}/api/admin-login`,
+                {
+                    method: "POST",
+                    headers: {
+                      Accept: "application/json",
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      email:email, 
+                      password:password,
+                    }),
+                });
+                let data = await response.json();
+                console.log(data)
+                if(data.token){
+                  localStorage.setItem("token", data.token)
+                  }
+                 return data;
+        }catch(e){
+            console.log("error", e.response.data);
+            thunkAPI.rejectWithValue(e.response.data);
+        }
     }
-  );
+);
+
+
 
 const loginReducer = createSlice({
     name:"admin",
@@ -48,17 +53,17 @@ const loginReducer = createSlice({
 
     },
     extraReducers:{
-        [adminLogin.fulfilled] : (state, action) => {
-            return { loginUser:{...action.payload} }
-        },
-        [adminLogin.pending] : (state, action) => {
+        [loginAdmin.fulfilled] : (state, action) => {
             return { ...action.payload }
         },
-        [adminLogin.rejected] : (state, action) => {
+        [loginAdmin.pending] : (state, action) => {
+            return { ...action.payload }
+        },
+        [loginAdmin.rejected] : (state, action) => {
             return { ...action.payload }
         },
     }
 });
 
-export const {} = loginReducer.actions;
+//export const {} = loginReducer.actions;
 export default loginReducer.reducer;

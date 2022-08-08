@@ -170,10 +170,10 @@ const AllowPermissionTable = () => {
                                 <td>
                                     <input type="checkbox"
                                             className='cm-toggle'
-                                            checked={allowPermit.status}
+                                            checked={allowPermit.status == 1 ? true : false}
                                             name="status"
                                             id={allowPermit.allow_id}
-                                            value={allowPermit.status || ""}
+                                            value={allowPermit.status == 1 ? true : false}
                                             onChange={(e)=> handleUpdateStatus(e, allowPermit.allow_id) }
                                     />        
                                 </td>

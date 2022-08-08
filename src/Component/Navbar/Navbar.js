@@ -4,9 +4,9 @@ import './navbar.css'
 
 
 const Navbar = () => {
-
-    const appUser = useSelector((state)=>state?.Users?.firebaseUser)
-    //console.log(appUser)
+    const adminUser = useSelector((state) => state.authLogin);
+    //const appUser = useSelector((state)=>state?.Users?.firebaseUser)
+    //console.log(adminUser)
     return (
         <nav className="navbar portalNavbar">
             <div className="container-fluid">
@@ -19,8 +19,8 @@ const Navbar = () => {
                 <div className='navRight'>
                     <i className="fa fa-bell notification"></i>
                     <div className='userProfile'>
-                        <img src={appUser?.photoURL} className='userProfileAvtar' alt='Avatar' />
-                        <div className='userProfileName'>{appUser?.displayName || "Guest"}</div>
+                        <div className="userProfileAvtar">{ adminUser?.data?.profile ? <img src={adminUser?.data?.profile} className='' alt='' /> : adminUser.data.name.split('')[0].toUpperCase()}</div>
+                        <div className="userProfileName">{adminUser.data.name || "Guest"}</div>
                     </div>
                 </div>
             </div>

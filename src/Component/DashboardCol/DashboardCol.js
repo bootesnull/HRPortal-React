@@ -12,7 +12,7 @@ const DashboardCol = () => {
                                     <h3 className=""> 120</h3>
                                 </div>
                                 <div>
-                                    <h2><i class="fa fa-users" aria-hidden="true"></i></h2>
+                                    <i className="fa fa-users h2" aria-hidden="true"></i>
                                 </div>
                             </div>
                         </div>
@@ -26,7 +26,7 @@ const DashboardCol = () => {
                                     <h3 className=""> 110</h3>
                                 </div>
                                 <div>
-                                    <h2><i class="fa fa-users" aria-hidden="true"></i></h2>
+                                    <i className="fa fa-users h2" aria-hidden="true"></i>
                                 </div>
                             </div>
                         </div>
@@ -40,7 +40,7 @@ const DashboardCol = () => {
                                     <h3 className=""> 10</h3>
                                 </div>
                                 <div>
-                                    <h2><i class="fa fa-user-times" aria-hidden="true"></i></h2>
+                                    <i className="fa fa-user-times h2" aria-hidden="true"></i>
                                 </div>
                             </div>
                         </div>
@@ -54,7 +54,7 @@ const DashboardCol = () => {
                                     <h3 className=""> 8</h3>
                                 </div>
                                 <div>
-                                    <h2><i class="fa fa-folder-open" aria-hidden="true"></i></h2>
+                                    <i className="fa fa-folder-open h2" aria-hidden="true"></i>
                                 </div>
                             </div>
                         </div>
@@ -68,7 +68,7 @@ const DashboardCol = () => {
                                     <h3 className=""> 8</h3>
                                 </div>
                                 <div>
-                                    <h2><i class="fa fa-tasks" aria-hidden="true"></i></h2>
+                                    <i className="fa fa-tasks h2" aria-hidden="true"></i>
                                 </div>
                             </div>
                         </div>
@@ -82,7 +82,7 @@ const DashboardCol = () => {
                                     <h3 className=""> 2</h3>
                                 </div>
                                 <div>
-                                    <h2><i class="fa fa-calendar" aria-hidden="true"></i></h2>
+                                    <i className="fa fa-calendar h2" aria-hidden="true"></i>
                                 </div>
                             </div>
                         </div>

@@ -248,10 +248,10 @@ const RoleTable = () => {
                                     <td> {editTableCol === rolesData.id ? (<input autoComplete="off" type="text" name="name" value={editFormData.name} onChange={handleEditChange} />) : (rolesData.name)}</td>
                                     <td><input type="checkbox"
                                         className='cm-toggle'
-                                        checked={rolesData.status}
+                                        checked={rolesData.status == 1 ? true : false}
                                         name="status"
                                         id={rolesData.id}
-                                        value={rolesData.status  || ""}
+                                        value={rolesData.status  == 1 ? true : false}
                                         onChange={(e) => handleUpdateStatus(e, rolesData.id)}
                                     />
                                     </td>

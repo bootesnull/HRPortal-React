@@ -252,10 +252,10 @@ const LeavesListType = () => {
                                                 <td>
                                                     <input type="checkbox"
                                                         className='cm-toggle'
-                                                        checked={leave.status}
+                                                        checked={leave.status == 1 ? true : false}
                                                         name="status"
                                                         id={leave.id}
-                                                        value={leave.status  || ""}
+                                                        value={leave.status  == 1 ? true : false}
                                                         onChange={(e) => handleUpdateStatus(e, leave.id)}
                                                     />
                                                 </td>
