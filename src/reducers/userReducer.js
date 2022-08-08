@@ -34,7 +34,7 @@ export const usersList = async (callback) => {
 
 // user login 
 export const userLogin = createAsyncThunk(
-    "roles/roleAdd",
+    "login/user-login",
     async ({token, name, email}, thunkAPI) => {
      
       try {

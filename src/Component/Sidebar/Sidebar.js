@@ -1,20 +1,23 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import logo from '../../Images/logo.svg'
 import { NavLink } from 'react-router-dom'
 import { auth } from "../../firebase"
 import { userLogout } from '../../reducers/userReducer'
-
+import { useNavigate } from "react-router-dom";
 import './sidebar.css'
 
 
 const Sidebar = () => {
 
+    const navigate = useNavigate();
+
     const dispatch = useDispatch();
 
     const logOut = () => {
 
-        dispatch(userLogout())
+        dispatch(userLogout()).then(()=>{
+            navigate("/")
+        })
         auth.signOut()
 
     }
@@ -24,7 +27,7 @@ const Sidebar = () => {
         <nav className="sidebar">
             <ul>
                 <li className='logoLi'>
-                    <NavLink to='/home' className='logoLink'><img className='logo' src={logo} alt='Company Logo' /></NavLink>
+                    <NavLink to='/home' className='logoLink'><img className='logo' src="./images/logo.svg" alt='Company Logo' /></NavLink>
                 </li>
                 <li>
                     <NavLink to='/attendence' > Attendence</NavLink>

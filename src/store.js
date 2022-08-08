@@ -14,6 +14,7 @@ import announcementReducer from "./reducers/announcementReducer";
 import eventsReducer from "./reducers/eventsReducer";
 import reportsReducer from "./reducers/reportsReducer";
 import attendenceReducer from "./reducers/attendenceReducer";
+import loginReducer from "./reducers/loginReducer";
 
 const reducers = combineReducers({
     Roles: rolesReducer,
@@ -25,6 +26,7 @@ const reducers = combineReducers({
     Events : eventsReducer,
     Reports : reportsReducer,
     Attendence : attendenceReducer,
+    login : loginReducer,
 
 });
 

@@ -177,11 +177,11 @@ const RoleTable = () => {
     }
 
     // //search filter handler    
-    const searchFilter = (e) => {
-        const search = e.target.value.toLowerCase();
-        const filterData = roleTbData.filter(newData => newData.name.toLowerCase().includes(search))
-        setRoleTbData(filterData);
-    };
+    // const searchFilter = (e) => {
+    //     const search = e.target.value.toLowerCase();
+    //     const filterData = roleTbData.filter(newData => newData.name.toLowerCase().includes(search))
+    //     setRoleTbData(filterData);
+    // };
 
 
     return (
@@ -198,7 +198,7 @@ const RoleTable = () => {
                         }}>Assign Role</button>
                 </div>
 
-                <div className="d-flex justify-content-between my-3">
+                {/* <div className="d-flex justify-content-between my-3">
                     <div className="d-flex">
                         <div className="form-group has-search">
                             <span className="fa fa-search form-control-feedback"></span>
@@ -207,6 +207,28 @@ const RoleTable = () => {
                             />
                         </div>
                     </div>
+                </div> */}
+
+                <div>
+                    <form className="row g-3" onSubmit={handleAddData}>
+                        <div className="col-3 px-0">
+                            <input type="text" className="form-control" id="" placeholder='Add Role Name' name="name" onChange={handleAddChange} required="required" autoComplete="off" />
+                        </div>
+
+                        <div className="col-3">
+                            <div><button type="submit" className="btn btn-primary" >Add</button></div>
+                        </div>
+
+
+                        {/* { message} */}
+                        {/* { message.successMessage ?
+                            (<div>{message.successMessage && <div className="alert alert-success">{message.successMessage}</div>}</div>)
+                            :
+                            ( <div >{message.errorMessage && <div className="alert alert-danger">{message.errorMessage}</div>}</div>)
+                        } */}
+                       
+
+                    </form>
                 </div>
 
                 <table className='table table-bordered'>
@@ -249,28 +271,7 @@ const RoleTable = () => {
                 </table>
 
 
-                <div>
-                    <h4>Add Information</h4>
-                    <form className="row g-3" onSubmit={handleAddData}>
-                        <div className="col-3">
-                            <input type="text" className="form-control" id="" placeholder='Role Name' name="name" onChange={handleAddChange} required="required" autoComplete="off" />
-                        </div>
-
-                        <div className="col-3">
-                            <div><button type="submit" className="btn btn-primary" >Add</button></div>
-                        </div>
-
-
-                        {/* { message} */}
-                        {/* { message.successMessage ?
-                            (<div>{message.successMessage && <div className="alert alert-success">{message.successMessage}</div>}</div>)
-                            :
-                            ( <div >{message.errorMessage && <div className="alert alert-danger">{message.errorMessage}</div>}</div>)
-                        } */}
-                       
-
-                    </form>
-                </div>
+                
             </div>
 
 

@@ -3,7 +3,7 @@
 	padding: 0;
 	font-family: 'Poppins', sans-serif;
   }
-
+body {background-color: #f5f8fb!important; }
   th {font-weight: 600; }
 .App {
   text-align: center;

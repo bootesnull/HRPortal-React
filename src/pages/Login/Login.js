@@ -5,29 +5,18 @@ import { auth, provider } from "../../firebase"
 import { signInWithPopup } from 'firebase/auth'
 import { userLogin } from "../../reducers/userReducer";
 import { useDispatch, useSelector } from "react-redux";
+import { adminLogin } from "../../reducers/loginReducer";
 import './login.css';
 
 const Login = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
-    const [user, setUser] = useState({
+    const [loginuser, setLoginuser] = useState({
         userName:"",
         password:"",
     });
     
-    const token = useSelector((state) => state?.Users?.firebaseUser?.accessToken)
-
-    // console.log(token);
-    useEffect(() => {
-        if (token) {
-            navigate("/home")
-        }
-        else {
-            navigate("/")
-        }
-    // eslint-disable-next-line    
-    }, [token])
-
+   // const token = useSelector((state) => state?.Users?.firebaseUser?.accessToken)
     
     const signWithGoogle = () => {
         signInWithPopup(auth, provider)
@@ -48,11 +37,19 @@ const Login = () => {
     }
 
     const handleLogin = (e) => {
+        // const callback = () =>{
+        //     alert("jfdhg")
+        // }
         e.preventDefault();
-        
+        dispatch(adminLogin(loginuser)).then(()=>{
+            navigate("/home")
+        }).catch(()=>{
+            navigate("/")
+        })
+        // navigate("/home")
     }
     const handleChange = (e) => {
-        setUser((preState)=> {
+        setLoginuser((preState)=> {
            // console.log(e.target.name , e.target.value);
             return {...preState, [e.target.name] : e.target.value }
         })
@@ -62,7 +59,14 @@ const Login = () => {
         <>
         <div className="loginBg"></div>
             <div className="container-fluid">
-                <div className="row justify-content-end align-items-center form-row">
+                <div className="row justify-content-between align-items-center form-row">
+                    <div className="col-lg-5 offset-lg-1 text-light  ">
+                        <h1>JOIN OUR <br />COMMUNITY</h1>
+                        <p className="font-weight-normal">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vehicula ex eu gravida faucibus. Suspendisse viverra pharetra purus.
+                            Proin fringilla ac lorem at sagittis. Proin tincidunt dui et nunc ultricies dignissim.
+                        </p>
+                    </div>
                     <div className="col-lg-4 form-col">
                         <div className="card">
                             <div className="p-4 card-body text-center">

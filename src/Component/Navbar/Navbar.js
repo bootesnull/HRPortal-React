@@ -1,13 +1,12 @@
 import React from 'react'
 import { useSelector } from "react-redux";
-import userImg from '../../Images/user.jpg'
 import './navbar.css'
 
 
 const Navbar = () => {
 
     const appUser = useSelector((state)=>state?.Users?.firebaseUser)
-    console.log(appUser)
+    //console.log(appUser)
     return (
         <nav className="navbar portalNavbar">
             <div className="container-fluid">
@@ -20,8 +19,8 @@ const Navbar = () => {
                 <div className='navRight'>
                     <i className="fa fa-bell notification"></i>
                     <div className='userProfile'>
-                        <img src={appUser.photoURL} className='userProfileAvtar' alt='User Avatar' />
-                        <div className='userProfileName'>{appUser.displayName}</div>
+                        <img src={appUser?.photoURL} className='userProfileAvtar' alt='Avatar' />
+                        <div className='userProfileName'>{appUser?.displayName || "Guest"}</div>
                     </div>
                 </div>
             </div>
