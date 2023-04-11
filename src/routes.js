@@ -1,6 +1,7 @@
 import React from "react";
 
 import Home from './pages/Home/Home';
+import Organization from "./pages/Organization/Organization";
 import Roles from './pages/Roles/Roles';
 import Permission from './pages/Permission/Permission';
 import AllowPermission from './pages/AllowPermission/AllowPermission';
@@ -15,6 +16,7 @@ import Error from './pages/Error/Error';
 
 const routes = [
     { path: "/home", exact: true, name: "Home", element: Home },
+    { path: "/organization", exact: true, name: "Organization", element: Organization },
     { path: "/attendence", exact: true, name: "Attendence", element: Attendence },
     { path: "/roles", exact: true, name: "Roles", element: Roles },
     { path: "/permission", exact: true, name: "Permission", element: Permission },

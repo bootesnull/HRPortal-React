@@ -1,9 +1,14 @@
 import React from "react";
 
+
 const DashboardCol = () => {
+
     return (
         <div>
                 <div className="row">
+
+                    
+                    
                     <div className='col-lg-2 mb-3'>
                         <div className="card bg-primary text-white">
                             <div className="card-body d-flex justify-content-between " >

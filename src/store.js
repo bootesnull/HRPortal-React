@@ -4,7 +4,7 @@ import persistStore from 'redux-persist/es/persistStore';
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist'
 
-
+import organizationReducer from "./reducers/organizationReducer";
 import rolesReducer from "./reducers/rolesReducer";
 import userReducer from "./reducers/userReducer";
 import permissionReducer from "./reducers/permissionReducer";
@@ -18,6 +18,7 @@ import loginReducer from "./reducers/loginReducer";
 import googleLoginReducer from "./reducers/googleLoginReducer";
 
 const reducers = combineReducers({
+    Organization: organizationReducer,
     Roles: rolesReducer,
     Users: userReducer,
     Permissions: permissionReducer,

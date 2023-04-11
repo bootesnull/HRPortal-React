@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { API_URL } from "../api";
+import { API_URL, token } from "../api";
 
 
 const initialState = {
@@ -44,6 +44,30 @@ export const loginAdmin = createAsyncThunk(
     }
 );
 
+// admin login out
+export const logoutAdmin = createAsyncThunk(
+    "login/admin-logout",
+    async (token, thunkAPI) => {
+        try{
+            const response = await fetch(
+                `${API_URL}/api/logout`,
+                {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization : `Bearer ${token}`, 
+                    },
+                });
+                let data = await response.json();
+                console.log(data);
+                return data;
+        }catch(e){
+            console.log("error", e.response.data);
+            thunkAPI.rejectWithValue(e.response.data);
+        }
+    }
+);
+
 
 
 const loginReducer = createSlice({
@@ -60,6 +84,16 @@ const loginReducer = createSlice({
             return { ...action.payload }
         },
         [loginAdmin.rejected] : (state, action) => {
+            return { ...action.payload }
+        },
+
+        [logoutAdmin.fulfilled] : (state, action) => {
+            return { ...action.payload }
+        },
+        [logoutAdmin.pending] : (state, action) => {
+            return { ...action.payload }
+        },
+        [logoutAdmin.rejected] : (state, action) => {
             return { ...action.payload }
         },
     }

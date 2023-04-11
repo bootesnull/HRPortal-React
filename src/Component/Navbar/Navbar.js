@@ -19,8 +19,8 @@ const Navbar = () => {
                 <div className='navRight'>
                     <i className="fa fa-bell notification"></i>
                     <div className='userProfile'>
-                        <div className="userProfileAvtar">{ adminUser?.data?.profile ? <img src={adminUser?.data?.profile} className='' alt='' /> : adminUser.data.name.split('')[0].toUpperCase()}</div>
-                        <div className="userProfileName">{adminUser.data.name || "Guest"}</div>
+                        <div className="userProfileAvtar">{ adminUser?.data?.profile ? <img src={adminUser?.data?.profile} className='' alt='' /> : adminUser?.data?.name.split('')[0].toUpperCase() || "U" }</div>
+                        <div className="userProfileName">{adminUser?.data?.name || "Guest"}</div>
                     </div>
                 </div>
             </div>

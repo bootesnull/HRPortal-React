@@ -210,5 +210,5 @@ const rolesReducer = createSlice({
 });
 
 
-export const { fetchRoleList } = rolesReducer.actions;
+//export const { fetchRoleList } = rolesReducer.actions;
 export default rolesReducer.reducer;

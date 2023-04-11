@@ -6,7 +6,7 @@ import routes from '../../routes'
 
 const Content = () => {
     return (
-        <div>
+        <>
             <Routes>
                 {routes.map((route, index)=> {
                     return (
@@ -22,7 +22,7 @@ const Content = () => {
                     )
                 })}
             </Routes>
-        </div>
+        </>
     )
 }
 

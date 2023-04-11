@@ -6,7 +6,9 @@ const ProtectedRoute = () => {
     // const token = useSelector((state)=>state?.Users?.firebaseUser?.accessToken)
     // console.log(token);
      let token = localStorage.getItem("token");
-        return  token ? <Layout />  : <Navigate to="/" />
+        return  token ? <Layout />  : <Layout />
+        
+        // <Navigate to="/" />
 }
 
 export default ProtectedRoute;

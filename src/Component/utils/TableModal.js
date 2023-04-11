@@ -18,7 +18,6 @@ const TableModal = ({show,  cancelModal, modalHeading, structure,}) => {
                                 <div className="modal-body">
                                     {structure}
                                 </div>
-                                
                             </div>
                         </div>
                     </div>

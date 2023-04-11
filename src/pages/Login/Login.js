@@ -16,22 +16,15 @@ const Login = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        dispatch(loginAdmin(adminLogin)).then(()=>{
-            //navigate("/home") 
-            if(localStorage.getItem("token")) {
-               navigate("/home") 
-            }
-        }).catch(()=>{
-            navigate("/")
-        })
-    }
-
-
-    const handleChange = (e) => {
-        setAdminLogin((preState)=> {
-           // console.log(e.target.name , e.target.value);
-            return {...preState, [e.target.name] : e.target.value }
-        })
+        // dispatch(loginAdmin(adminLogin)).then(()=>{
+        //     //navigate("/home") 
+        //     if(localStorage.getItem("token")) {
+        //        navigate("/home") 
+        //     }
+        // })
+        // .catch(()=>{
+        //     navigate("/")
+        // })
     }
 
     useEffect(()=>{
@@ -42,6 +35,15 @@ const Login = () => {
             toast.error(loginDetails.message);
         }
     },[loginDetails])
+
+
+    const handleChange = (e) => {
+        setAdminLogin((preState)=> {
+            return {...preState, [e.target.name] : e.target.value }
+        })
+    }
+
+
 
     return (
         <>

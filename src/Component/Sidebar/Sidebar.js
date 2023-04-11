@@ -1,8 +1,9 @@
 import React from 'react'
-// import { useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 // import { auth } from "../../firebase"
-// import { userLogout } from '../../reducers/userReducer'
+// import { userLogout } from '../../reducers/googleLoginReducer'
+import { logoutAdmin } from '../../reducers/loginReducer';
 import { useNavigate } from "react-router-dom";
 import './sidebar.css'
 
@@ -10,8 +11,7 @@ import './sidebar.css'
 const Sidebar = () => {
 
     const navigate = useNavigate();
-
-    //const dispatch = useDispatch();
+    const dispatch = useDispatch();
     // const logOut = () => {
     //     dispatch(userLogout()).then(()=>{
     //         navigate("/")
@@ -20,12 +20,23 @@ const Sidebar = () => {
     // }
     //localStorage.getItem("token")
 
+    let token = localStorage.getItem("token")
+    const handleLogout = () => {
+        dispatch(logoutAdmin(token)).then(()=> {
+            localStorage.removeItem("token")
+        navigate("/")
+        })
+    }
+   
     return (
 
         <nav className="sidebar">
             <ul>
                 <li className='logoLi'>
                     <NavLink to='/home' className='logoLink'><img className='logo' src="./images/logo.svg" alt='Company Logo' /></NavLink>
+                </li>
+                <li>
+                    <NavLink to='/organization' > Organization</NavLink>
                 </li>
                 <li>
                     <NavLink to='/attendence' > Attendence</NavLink>
@@ -56,10 +67,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                     <div className="nav-item-bottom" 
-                        onClick={() => {
-                            localStorage.removeItem("token")
-                            navigate("/")
-                        }} 
+                        onClick={handleLogout} 
                     ><i className="fa fa-sign-out"> </i>Logout</div>
                 </li>
             </ul>
