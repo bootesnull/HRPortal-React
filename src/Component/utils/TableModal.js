@@ -13,7 +13,7 @@ const TableModal = ({show,  cancelModal, modalHeading, structure,}) => {
                             <div className="modal-content">
                                 <div className="modal-header">
                                     <h5 className="modal-title">{modalHeading}</h5>
-                                    <button type="button" className="btn-close" onClick={()=> cancelModal(false)}></button>
+                                    <button type="button" className="btn-close" onClick={cancelModal}></button>
                                 </div>
                                 <div className="modal-body">
                                     {structure}

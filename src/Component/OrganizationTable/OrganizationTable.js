@@ -74,11 +74,10 @@ const OrganizationTable = () => {
         }
         formData.append('is_ip_enable', createOrg.is_ip_enable);
 
-        for(let key in addIpAddress){
-            createOrg.organization_ip_address.push(addIpAddress[key])
+        if (createOrg.is_ip_enable == 1) {
+            formData.append('organization_ip_address[]', createOrg.organization_ip_address);
         }
-
-        formData.append('organization_ip_address', createOrg.organization_ip_address);
+        
         e.preventDefault();
 
         dispatch(organizationCreate(formData)).then((data) => {
@@ -101,38 +100,67 @@ const OrganizationTable = () => {
     };
 
     const handleEventEdit = (item) => {
+        console.log("gggggg",item)
+
+        let organization_ip_address =  item.organization_ip_address.split(',')
+            console.log(organization_ip_address);
         showModal()
-        setCreateOrg({ ...item })
-        console.log(item)
+        setCreateOrg({ ...item,organization_ip_address:organization_ip_address })
+        
+        setIpAddressList([...organization_ip_address])
+
     }
 
-    const [inputCount, setInputCount] = useState(1)
-    const [addIpAddress, setAddIpAddress] = useState({
-        ip_address0:""
 
+    const [ipAddressList, setIpAddressList] = useState([""]);
+ 
+    const handleAddClick = (e, i) => {
+        setIpAddressList([...ipAddressList, ""]);
+    };
+
+    const handleSubClick = (e, i) => {
+        e.preventDefault();
+        const list = [...ipAddressList];
+        list.splice(i, 1);
+        setIpAddressList(list);
+    };
+
+
+    const handleIpChange = (e, index) => {
+        const { value } = e.target;
+        const list = [...ipAddressList];
+        list[index] = value;
+        setIpAddressList(list);
+    };
+
+    useEffect(() => {
+        ipAddressList.map((item, index) => {
+        setCreateOrg(() => {
+            return {
+                ...createOrg,
+                organization_ip_address: [...ipAddressList],
+            };
+        });
     });
+    }, [ipAddressList ]);
 
-    const handleAddClick = () => {
-        setInputCount(inputCount + 1)
-    }
-
-    const handleSubClick = () => {
-        if (inputCount > 1) {
-             delete addIpAddress[`ip_address${(inputCount-1)}`]
-            setInputCount(inputCount - 1)
+    useEffect(()=>{
+            if(!showBasicModal) {
+            setCreateOrg({
+                id: "",
+                name: "",
+                logo: "",
+                domain: "",
+                is_ip_enable: "",
+                organization_ip_address: [],
+            }) 
+            setIpAddressList([""])
         }
-    }
+    },[showBasicModal])
 
-    const handleIpChange = (e) => {
-        setAddIpAddress((state)=>{
-            return{
-                ...state,
-                [e.target.name]:e.target.value
-            }
-        })
-    }
 
-    console.log(addIpAddress)
+
+    
 
 
     return (
@@ -239,37 +267,43 @@ const OrganizationTable = () => {
                                     className="form-select"
                                     name="is_ip_enable"
                                     onChange={handleChange}
-                                    value={createOrg.is_ip_enable ? createOrg.is_ip_enable : 0}
+                                    value={createOrg.is_ip_enable ? createOrg.is_ip_enable : createOrg.is_ip_enable = 0}
                                 >
                                     <option value="0">Disable Ip Address</option>
                                     <option value="1">Enable Ip Address</option>
                                 </select>
                             </div>
-
-                            <div className="col-lg-12 mb-3">
-                                <label className="form-label">Organization Ip Address</label>
-                                {Array(inputCount).fill(1).map((item, index) =>
-                                    <div className="d-flex mb-3" key={index}>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder='Enter Ip Address'
-                                            name={`ip_address${index}`}
-                                            onChange={handleIpChange}
-                                            autoComplete="off"
-                                            
-                                        />
-
-                                    </div>
-                                )}
-
-                                <button type="button" className="btn btn-secondary btn-sm " onClick={handleSubClick}  >-</button>
-                                <button type="button" className="btn btn-secondary btn-sm mx-2" onClick={handleAddClick}  >+</button>
-
+                            { createOrg.is_ip_enable == 1 ? (
+                                <div className="col-lg-12 mb-3">
+                                    {ipAddressList.map((item, index) => {
+                                    return (
+                                        <>
+                                            <div className="col d-flex mb-2">
+                                                <input
+                                                    name="organization_ip_address"
+                                                    placeholder="Enter Ip Address"
+                                                    className="form-control me-2"
+                                                    value={item}
+                                                    onChange={(e) => handleIpChange(e, index)}
+                                                />
+                                                <div className="d-flex">
+                                                    {ipAddressList.length !== 1 && (
+                                                        <button className="btn btn-secondary btn-sm" onClick={(e) => handleSubClick(e, index)}> - </button>
+                                                    )}
+                                                    {ipAddressList.length - 1 === index && (
+                                                        <button className="btn btn-secondary btn-sm ms-2" onClick={handleAddClick}> + </button>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </>
+                                    );
+                                })}
+                                {console.log(ipAddressList)}
                             </div>
+                            ) : "" }
 
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" onClick={(e) => setShowBasicModal(false)}  >Cancel</button>
+                                <button type="button" className="btn btn-secondary" onClick={()=>setShowBasicModal(false)}  >Cancel</button>
                                 <button type="submit" className="btn btn-primary"  >Save</button>
                             </div>
                         </form>
