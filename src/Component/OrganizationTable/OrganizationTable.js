@@ -26,13 +26,9 @@ const OrganizationTable = () => {
 
     });
 
-
-
     const [selectedFile, setSelectedFile] = useState();
 
-
-    console.log(createOrg)
-
+   // console.log(createOrg)
 
     const [orgTbData, setOrgTbData] = useState([{}]);
 
@@ -100,13 +96,12 @@ const OrganizationTable = () => {
     };
 
     const handleEventEdit = (item) => {
-        console.log("gggggg",item)
+       // console.log("gggggg",item)
 
-        let organization_ip_address =  item.organization_ip_address.split(',')
-            console.log(organization_ip_address);
+        let organization_ip_address =  item?.organization_ip_address?.split(',')
+           // console.log(organization_ip_address);
         showModal()
         setCreateOrg({ ...item,organization_ip_address:organization_ip_address })
-        
         setIpAddressList([...organization_ip_address])
 
     }
@@ -196,7 +191,7 @@ const OrganizationTable = () => {
                                 <td>{item.name}</td>
                                 <td><img src={item.logo} alt="Logo" /></td>
                                 <td>{item.domain}</td>
-                                <td>{item.is_ip_enable}</td>
+                                <td>{item.is_ip_enable == 1 ? "Enabled" : "Disabled" }</td>
                                 <td>{item.organization_ip_address}</td>
                                 <td>
                                     <input type="checkbox"
@@ -298,7 +293,7 @@ const OrganizationTable = () => {
                                         </>
                                     );
                                 })}
-                                {console.log(ipAddressList)}
+                                {/* {console.log(ipAddressList)} */}
                             </div>
                             ) : "" }
 
