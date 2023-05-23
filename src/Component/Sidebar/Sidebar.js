@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import logo from '../../Images/logo.svg'
 import { NavLink } from 'react-router-dom'
-import { auth } from "../../firebase"
+import { auth } from "../../Firebase"
 import { userLogout } from '../../reducers/userReducer'
 
 import './sidebar.css'

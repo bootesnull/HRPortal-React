@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import GoogleLoginBtn from 'react-google-button'
-import { auth, provider } from "../../firebase"
+import { auth, provider } from "../../Firebase"
 import { signInWithPopup } from 'firebase/auth'
 import { userAuth } from "../../reducers/userReducer";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,6 +30,7 @@ const Login = () => {
             .then((result) => {
                 const resultData = result.user;
                 dispatch(userAuth(resultData))
+
             })
             .catch((error) => {
                 console.log(error);

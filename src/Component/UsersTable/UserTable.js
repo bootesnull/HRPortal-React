@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { usersList } from "../../reducers/userReducer";
 
 import { Link } from "react-router-dom";
@@ -9,14 +9,14 @@ const UsersTable = () => {
 
 
 
-    useEffect(()=> {
+    useEffect(() => {
         const callback = (data) => {
             setUserTbData([...data]);
         }
         usersList(callback);
-    },[userDetails])
+    }, [userDetails])
 
-  
+
 
     return (
         <div>
@@ -30,6 +30,8 @@ const UsersTable = () => {
                         <th>Phone</th>
                         <th>Role</th>
                         <th>Status</th>
+                        <th>Attendance</th>
+                        <th>Leaves</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -44,10 +46,12 @@ const UsersTable = () => {
                                 <td>{user.phone}</td>
                                 <td>{user.role}</td>
                                 <td>{user.status}</td>
+                                <td><Link className="btn btn-secondary  btn-sm mx-1" to={`/attendanceDetails/${user.id}`}>Attendance Detail</Link></td>
+                                <td><Link className="btn btn-secondary  btn-sm mx-1" to={`/leaveDetails/${user.id}`}>Leaves Detail</Link></td>
                                 <td>
                                     {/* <button className="btn btn-primary  btn-sm mx-1">View Detail</button> */}
-                                  
-                                    <Link className="btn btn-secondary  btn-sm mx-1" to={'/editUserDetails/'+ user.id}>Update</Link>
+
+                                    <Link className="btn btn-secondary  btn-sm mx-1" to={'/editUserDetails/' + user.id}>Update</Link>
                                 </td>
                             </tr>
                         );
