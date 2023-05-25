@@ -139,10 +139,6 @@ const LeavesListType = () => {
 
     return (
         <div>
-
-
-
-
             <div className="Tabs">
                 <ul className="nav nav-tabs">
                     <li  className={`nav-link ${activeTab === 'tab1' ? '  active' : ''}`} onClick={handleTab1 }> Leaves List </li>
@@ -156,19 +152,13 @@ const LeavesListType = () => {
                             <table className='table table-bordered'>
                                 <thead>
                                     <tr>
-                                        {/* <th>#ID</th> */}
-                                        <th>Leave&nbsp;ID</th>
-                                        <th>User&nbsp;ID</th>
                                         <th>User Name</th>
                                         <th>Leave Type</th>
-                                        <th>Paid</th>
-                                        <th>Approver</th>
                                         <th>Apply Date</th>
                                         <th>From Date</th>
                                         <th>To Date</th>
                                         <th>Reasons</th>
                                         <th width="100">Document</th>
-                                        <th>Allowed</th>
                                         {/* <th>Approved By</th> */}
                                         <th>Total Leave</th>
                                         <th>Leave Status</th>
@@ -179,13 +169,8 @@ const LeavesListType = () => {
                                     {leavesUserList && leavesUserList?.map((userLeave, index) => {
                                         return (
                                             <tr key={index}>
-                                                {/* <td>{userLeave.id}</td> */}
-                                                <td>{userLeave.leaves_id}</td>
-                                                <td>{userLeave.user_id}</td>
                                                 <td>{userLeave.user_name}</td>
                                                 <td>{userLeave.leave_type_name}</td>
-                                                <td className="text-capitalize">{userLeave.is_paid}</td>
-                                                <td>{userLeave.approver}</td>
                                                 <td>{userLeave.formatedApplyDate}</td>
                                                 <td>{userLeave.formatedFromDate}</td>
                                                 <td>{userLeave.formatedToDate}</td>
