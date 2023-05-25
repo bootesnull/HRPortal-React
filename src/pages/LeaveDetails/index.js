@@ -88,7 +88,7 @@ const LeaveDetails = () => {
                             <span style={{ marginRight: "5px", fontSize: "16px" }}>Select Month</span>
                             <DatePicker defaultValue={dayjs("2023-05", "YYYY-MM")} format={"YYYY-MM"} onChange={monthOnChange} picker="month" />
                             <span style={{ marginLeft: "20px", fontSize: "16px" }}>Month</span>
-                            <Input disabled style={{ marginLeft: "5px", width: 200 }} value={monthName} />
+                            <Input disabled style={{ marginLeft: "5px", width: 200 }} value={month ? monthName : ""} />
                         </div>
                         <div style={{ marginTop: "15px" }}>
                             <table className='table table-bordered'>
